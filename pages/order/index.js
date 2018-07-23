@@ -2,6 +2,7 @@
 // 获取应用实例
 const app = getApp();
 import common from '/utils/common';
+import {http} from '../../utils/http'
 Page({
   ...common,
   data: {
@@ -38,47 +39,18 @@ Page({
       done: '',
       allorder: 'border'
     });
-    var status = 0;//0代表获取全部订单     
-    that.ajax_my_order(status);
+    that.queryOrder(1);
   },
   //根据订单状态获取我的订单
-  ajax_my_order: function (status) {
-    var that = this;
-    my.showLoading({
-      content: '加载中...',
-    });
-    console.log('进入到获取订单页面');
-    console.log(status);
-    my.httpRequest({
-      url: 'https://www.tianrenyun.com.cn/vendor/order/query',
-      data: {
-        "status": status
-      },
-      method: 'POST', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      //header: { 'content-type': 'application/json'}, // 设置请求的 header
-      header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      success: function (res) {
-        console.log("--------------res.data------------");
-        console.log(res.data);
-        console.log("--------------res.data------------");
-        that.setData({
-          loaddesc: that.data.loaddesc
-        });
-      },
-      fail: function () {
-        my.hideLoading();
-        // fail
-      },
-      complete: function () {
-        my.hideLoading();
-        // complete
-      }
-    });
+  queryOrder: function (status) {
+    const sessionKey = getApp().globalData.sessionkey
+    http('order/query', {status, sessionKey},1).then(res => {
+      console.log(res)
+    })    
   },
   //订单状态切换
   choseorder: function (event) {
     var that = this;
-
     that.data.loaddesc = '';
     that.setData({
       orderlist: '',

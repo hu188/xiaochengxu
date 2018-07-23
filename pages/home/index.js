@@ -165,7 +165,6 @@ Page({
 
   //测试获取商品优惠券信息
   goodscoupon: function () {
-
     my.httpRequest({
       url: 'http://www.tianrenyun.com.cn/vendor/api/coupon/goodsCoupon', // 该url是自己的服务地址，实现的功能是服务端拿到authcode去开放平台进行token验证
       //data: post_data,
@@ -216,27 +215,28 @@ Page({
       scancode()
     } else if (e * 1 === 3) {
       my.navigateTo({
-        url: '../mycenter/mycenter'
-      })
-    } else {
-      my.navigateTo({
-        url: '../pages/mycenter/mycenter'
+        url: '../mycenter/index'
       })
     }
   }
 })
 
 function scancode() {
+  const data = getApp().checkLogin()
+  if (data === undefined) {
+    getApp().login()
+  }
   my.scan({
     type: '',
     success: (res) => {
+      console.log(res.code)
       if (res.code.indexOf('/') > 0) {
         my.navigateTo({
-          url: '../youxian/goodssort'
+          url: '../goods/index'
         })
       } else {
         my.navigateTo({
-          url: '../youxian/goodsdetails?id=' + res.code
+          url: '../goodsDetail/index?id=' + res.code
         })
       }
     },

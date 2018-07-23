@@ -2,13 +2,13 @@
 <!--goodsdetails.wxml-->
 <import src="/wxParse/wxParse.axml"/>
 <view class="container">
-  <view class="discount">{{dicount}}</view>
+  <view class="discount" hidden>{{dicount}}</view>
   <view class="pagetop">
-    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" style="width:100%;height:50vh">
-      <block a:for="{{imgUrls}}">
+    <swiper  autoplay  style="width:100%;height:20vh;">
+      <block a:for="{{banners}}">
         <swiper-item>
           <view class="swiper-item">
-            <image src="{{item}}" class="slide-image" style="width:100%;height:50vh">1</image>
+            <image src="{{item}}" class="slide-image" mode="scaleToFill" style="width:100%"></image>
           </view>
         </swiper-item>
       </block>

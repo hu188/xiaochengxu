@@ -2,13 +2,13 @@
 const app = getApp();
 //import common from '/utils/common';
 import util from '/utils/util';
-//import WxParse from '/wxParse/wxParse.js';
+import { http } from '../../utils/http'
 var WxParse = require('../../wxParse/wxParse.js');
 Page({
   //...common,
   ...util,
   data: {
-    imgUrls: ['http://romens-10034140.image.myqcloud.com/conew_88_w001000009_002.jpg?imageView2/0/w/640/format/png/q/100'],
+    banners: [],
     autoplay: true,
     interval: 5000,
     duration: 1000,
@@ -77,22 +77,15 @@ Page({
   },
   /**查询商品的优惠券 */
   queryCouponList(id) {
-    my.httpRequest({
-      url: 'https://www.tianrenyun.com.cn/vendor/api/coupon/goodsCoupon',
-      data: {
-        sessionKey: '53CD4E223DB1F91E',
-        goodsId: id
-      },
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      success: (r) => {
-        const { data } = r.data
-        this.setData({
-          couponList: data
-        });
-        my.hideLoading();
-      }
-    });
+    const sessionKey = getApp().globalData.sessionkey
+    http('coupon/goodsCoupon', {
+      sessionKey: sessionKey,
+      goodsId: id
+    }, 1).then(res => {
+      this.setData({
+        couponList: res
+      });
+    })
   },
   /**减少数量 */
   productCountMinus: function () {
@@ -107,21 +100,20 @@ Page({
     var buynum = this.data.buynum - 1;
     this.setData({ buynum: buynum });
   },
-
   goIndexTap: function () {
     //回到首页
     my.switchTab({
-      url: '../youxian/index'
+      url: '../home/index'
     })
   },
   //跳转到提交订单页,立即支付购买功能
   goToAddrTap: function () {
     let { goods, buynum } = this.data
     goods['count'] = buynum
-    goods.couponList= []
+    goods.couponList = []
     getApp().globalData.goodsList = [goods]
     my.navigateTo({
-      url: '../order/submitorder'
+      url: '../submitOrder/index'
     })
   },
   goToCart: function () {
@@ -129,32 +121,27 @@ Page({
       url: '../cart/index'
     })
   },
-  onShareAppMessage: function () {
-    var that = this;
-    return {
-      title: '为您推荐' + app.globalData.projecttitle + '小程序',
-      path: '/pages/youxian/goodsdetails?id=' + that.data.id,
-      success: function (res) {
-        console.log(that.data.id);
-      },
-      fail: function (res) {
-      }
-    }
-  },
+  // onShareAppMessage: function () {
+  //   return {
+  //     title: '为您推荐' + app.globalData.projecttitle + '小程序',
+  //     path: '/pages/goodsdetails?id=' + that.data.id,
+  //     success: function (res) {
+  //       console.log(that.data.id);
+  //     },
+  //     fail: function (res) {
+  //     }
+  //   }
+  // },
+  /**查询商品详情 */
   queryDetail(id) {
-    my.httpRequest({
-      url: 'https://www.tianrenyun.com.cn/vendor/api/goods/queryGoodsDetail',
-      data: {
-        "goodsId": id
-      },
-      method: 'POST',
-      header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      success: (r) => {
-        this.setData({
-          goods: r.data.data,
-        });
-        my.hideLoading();
-      }
-    });
+    http('goods/queryGoodsDetail', { "goodsId": id }, 1).then(res => {
+      let {banners} = this.data
+      const path = getApp().globalData.imgPath + res.id + '.jpg'
+      banners.push(path)
+      this.setData({
+        goods: res,
+        banners
+      });
+    })
   }
 });

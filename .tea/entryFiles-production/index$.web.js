@@ -7,4 +7,5 @@ require('../../pages/youxian/goodsdetails');
 require('../../pages/youxian/coupon');
 require('../../pages/youxian/goodssort');
 require('../../pages/mycenter/mycenter');
-require('../../pages/logs/logs');
+require('../../pages/mycenter/coupon');
+require('../../pages/mycenter/orderlist');

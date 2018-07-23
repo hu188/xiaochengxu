@@ -1,13 +1,13 @@
 {
   "pages": [
-    "pages/youxian/index",
-    "pages/order/submitorder",
-    "pages/youxian/goodsdetails",
-    "pages/youxian/coupon",
-    "pages/youxian/goodssort",
-    "pages/mycenter/mycenter",
-    "pages/mycenter/coupon",
-    "pages/mycenter/orderlist"
+    "pages/home/index",
+    "pages/submitOrder/index",
+    "pages/goodsDetail/index",
+    "pages/coupon/index",
+    "pages/goods/index",
+    "pages/mycenter/index",
+    "pages/mycoupon/index",
+    "pages/order/index"
   ],
   "window": {
     "defaultTitle": "天任售货机平台",

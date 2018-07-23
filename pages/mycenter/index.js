@@ -22,7 +22,7 @@ Page({
     })
   },
   onLoad: function () {
-  
+
     //判断只有当未授权的时候，才调用此授权方法，1为当前页面在底部导航中，在IDE中授权relaunch方法无效
     var that = this;
     if (app.globalData.isGetedAuth == 0) {
@@ -143,7 +143,7 @@ Page({
               });
               console.log('touxiang' + app.globalData.userInfo.avatar);
               console.log('nickName' + app.globalData.userInfo.nickName);
-               that.setData({
+              that.setData({
                 userInfo: app.globalData.userInfo,
               })
               //获取用户user_id
@@ -293,9 +293,9 @@ Page({
     });
   },
   tapHandler(e) {
-    if (e*1 === 2) {
+    if (e * 1 === 2) {
       get_scancode()
-    } else if (e*1 === 3) {
+    } else if (e * 1 === 3) {
       my.navigateTo({
         url: '../mycenter/mycenter'
       })

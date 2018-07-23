@@ -2,22 +2,17 @@ import { http } from './utils/http'
 App({
   async onLaunch(options) {
     await this.queryType()
-    my.getStorage({
-      key: 'sessionKey',
-      success: (res) => {
-        const { data } = res
-        if (data === undefined) {
-        this.login()
-        } else {
-          this.globalData.sessionkey = data
-           my.getAuthUserInfo({
-            success: (res) => {
-             this.globalData.userInfo = res
-            },
-          });
-        }
-      },
-    });
+    const data = this.checkLogin()
+    if (data === undefined) {
+      this.login()
+    } else {
+      this.globalData.sessionkey = data
+      my.getAuthUserInfo({
+        success: (res) => {
+          this.globalData.userInfo = res
+        },
+      });
+    }
   },
   //测试获取用户的guid
   login() {
@@ -33,7 +28,7 @@ App({
         http('user/login', JSON.stringify(data), 1, 1).then(res => {
           const { sessionKey, userId } = res
           this.globalData.sessionkey = sessionKey
-            my.getAuthUserInfo({
+          my.getAuthUserInfo({
             success: (res) => {
               this.globalData.userInfo = res
             },
@@ -45,6 +40,22 @@ App({
         })
       }
     })
+  },
+  checkLogin() {
+    const data = my.getStorageSync({
+      key: 'sessionKey', // 缓存数据的key
+    });
+    return data === undefined ? false : data.data
+  },
+  showLoading(text='加载中...') {
+   return new Promise((resolve,reject) => {
+      my.showLoading({
+        content: text,
+        success: (res) => {
+          resolve()
+        },
+      });
+   })
   },
   async queryType() {
     await http('store/type', { "appId": "2018061360353335" }, 1).then(res => {
@@ -64,6 +75,7 @@ App({
     getting_userinfo: 0,//获取用户信息中,=1
     goods_id: '',
     hostname: 'https://www.tianrenyun.com.cn',
+    imgPath: 'https://www.tianrenyun.com/qsqFile/filelib/imagelib/dealerlib/',
     isNeedLogin: 0,//0为不需要登录，1为需要手机号验证码登录
     goodsList: [], //结算时选中的商品,
     type: {},

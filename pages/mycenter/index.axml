@@ -21,15 +21,15 @@
           <image class="iconfirst" src="../images/order-icon.png"></image>
           <view>我的订单</view>
         </view>
-        <navigator class="myordertext" url="../mycenter/orderlist">
+        <navigator class="myordertext" url="../order/index">
           <text>全部订单</text>
           <image class="iconsecond" src="http://mshop.yiyao365.cn/theme/default/images/wap/icon-05.png"></image>
         </navigator>
       </view>
     </view>
     <!--end  -->
-    <view class="order-list-all"> 
-      <navigator url="../mycenter/coupon">
+    <view class="order-list-all">
+      <navigator url="../coupon/index">
         <view class="div_div1 orderList">
           <view class="tab_div">
             <view class="ico1">

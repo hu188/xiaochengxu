@@ -23,6 +23,7 @@
 
 .slide-image {
     width: 100%;
+    height: 20vh;
 }
 
 .a-swiper-wrap {
