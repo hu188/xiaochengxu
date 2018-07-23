@@ -215,7 +215,7 @@ Page({
       scancode()
     } else if (e * 1 === 3) {
       my.navigateTo({
-        url: '../mycenter/index'
+        url: '../goods/index'
       })
     }
   }

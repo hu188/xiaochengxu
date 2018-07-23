@@ -1,12 +1,11 @@
 <view class="container">
 	<view class="classtab tb1">
-		<view onTap='choseorder' class="{{allorder}} tb1" hidden="">全部</view>
+		<view onTap='choseorder' class="{{allorder}} tb1" hidden>全部</view>
 		<view onTap='choseorder' data-value="1" class="{{waitpay}} tb1">待付款</view>
 		<view onTap='choseorder' data-value="2" class="{{waitsend}} tb1">已付款</view>
 		<view onTap='choseorder' data-value="3" class="{{waitget}} tb1">已取消</view>
 		<view onTap='choseorder' data-value="5" class="{{done}} tb1">已完成</view>
 	</view>
-	<!-- <view class="item" a:for="{{orderlist}}" a:for-index="idx" a:for-item="itemName"> -->
 	<view class="item">
 		<view class="od_div">
 			<navigator url="../order/orderdetails?id={{itemName.orderguid}}">

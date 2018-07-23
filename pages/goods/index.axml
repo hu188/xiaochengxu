@@ -1,31 +1,29 @@
+<import-sjs name="utils" from="./index.sjs"/>
 <view class="container container1">
   <!-- <view class="search"><view class="search-bar none {{showClass}}"><icon type="search" size="18"/><input type="text" class="abs" placeholder="搜索商品" onConfirm="btn" /></view><view class="cancel none {{showCancel}}" catchTap="closeCancel">取消</view><view id="search-bars" class="search-bars {{hideClass}}" catchTap="showSearch"><icon type="search" size="18"/><text>搜索商品</text></view></view> -->
   <view class="subclass">
     <scroll-view scroll-y="false" class="sub-left">
       <view class="ul-left">
-        <view a:for="{{goodssortlist}}" a:for-index="idx" a:for-item="itemName">
-          <view a:if="{{itemName.guid == goodssortselected}}">
-            <view class="active" id="{{itemName.guid}}" onTap="getGoodsSorts">{{itemName.name}}</view>
-          </view>
-          <view a:else>
-            <view id="{{itemName.guid}}" onTap="getGoodsSorts">{{itemName.name}}</view>
+        <view a:for="{{types}}" a:for-index="idx">
+          <view>
+            <view class="active" data-id="{{item.id}}" onTap="typeHand">{{item.commodityTypeName}}</view>
           </view>
         </view>
       </view>
     </scroll-view>
     <scroll-view scroll-y="false" class="sub-right">
-      <view a:if="{{secondgoodssortlist.length>0}}" class="sub-lists">
-        <view class="colsview" a:for="{{secondgoodssortlist}}" a:for-index="idx" a:for-item="item" onTap="getGoodsBySort" data-id="{{item.guid}}">
-          <image src="../images/fapiao.png"></image>
+      <view a:if="{{list.length>0}}" class="sub-lists">
+        <view class="colsview" a:for="{{list}}" onTap="getGoodsBySort" data-id="{{item.id}}">
+          <image src="{{utils.convertImagePath(item.id)}}"></image>
           <view>
-            <text class="coltex">{{item.name}}</text>
-            <text class="coltex price">￥{{item.price}}</text>
+            <text class="coltex">{{item.commodityName}}</text>
+            <text class="coltex price">￥{{item.retailPrice}}</text>
           </view>
         </view>
       </view>
       <view a:else class="sub-lists">
-                暂无商品
-              </view>
+                <text class="empty">暂无商品</text>
+      </view>
     </scroll-view>
   </view>
 </view> 
