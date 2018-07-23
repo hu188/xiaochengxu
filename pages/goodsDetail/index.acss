@@ -46,7 +46,6 @@
     height: auto;
     margin: 0 auto;
     color: #646565;
-    padding: 10px 0px;
     display: block;
     overflow: hidden;
 }

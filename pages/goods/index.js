@@ -6,7 +6,8 @@ Page({
     ...common,
     data: {
         types: [],
-        list: []
+        list: [],
+        selectType: -1
     },
     onLoad(e) {
         const { type } = getApp().globalData
@@ -14,15 +15,19 @@ Page({
             if (res.length > 0) {
                 const { id } = res[0]
                 this.queryChild(id)
+                this.setData({
+                    types: res,
+                    selectType: id
+                })
             }
-            this.setData({
-                types: res
-            })
         })
     },
     typeHand(e) {
         const { id } = e.currentTarget.dataset
         this.queryChild(id)
+        this.setData({
+            selectType: id
+        })
     },
     queryChild(id) {
         const { type } = getApp().globalData
@@ -77,7 +82,7 @@ Page({
     },
 
     //点击三级分类跳转商品列表
-    getGoodsBySort: function (event) {
+    queryDetail: function (event) {
         const { dataset } = event.currentTarget
         const { id } = dataset
         if (id != '') {
@@ -85,6 +90,12 @@ Page({
                 url: '../goodsDetail/index?id=' + id
             });
         }
+    },
+    submitHandler() {
+        console.log(123)
+    },
+    changeNumber (val) {
+        console.log(val)
     },
     // onShareAppMessage() {
     //     var that = this;

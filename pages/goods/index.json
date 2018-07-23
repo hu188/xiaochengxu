@@ -1,1 +1,6 @@
-{}
+{
+  "usingComponents":{
+    "cart":"../../components/cart/index",
+     "input-number":"../../components/input-number/index"
+  }
+}

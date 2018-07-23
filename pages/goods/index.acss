@@ -191,7 +191,7 @@
    margin-right: 20rpx;
    border-radius: 5rpx;
 }
-.colsview > view {
+.colsview > .goods {
     flex:1;
     height: 10vh;
     justify-content: flex-start;

@@ -72,7 +72,7 @@ Page({
     this.setData({ buynum: buynum, cartgoodssorts: buynum });
     const { couponList, goods } = this.data
     if (couponList.length === 0 && !goods.couponList) {
-      this.queryCouponList()
+      this.queryCouponList(goods.id)
     }
   },
   /**查询商品的优惠券 */

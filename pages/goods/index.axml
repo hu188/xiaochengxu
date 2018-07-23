@@ -6,19 +6,20 @@
       <view class="ul-left">
         <view a:for="{{types}}" a:for-index="idx">
           <view>
-            <view class="active" data-id="{{item.id}}" onTap="typeHand">{{item.commodityTypeName}}</view>
+            <view class="{{selectType === item.id ? 'active' : ''}}" data-id="{{item.id}}" onTap="typeHand">{{item.commodityTypeName}}</view>
           </view>
         </view>
       </view>
     </scroll-view>
     <scroll-view scroll-y="false" class="sub-right">
       <view a:if="{{list.length>0}}" class="sub-lists">
-        <view class="colsview" a:for="{{list}}" onTap="getGoodsBySort" data-id="{{item.id}}">
-          <image src="{{utils.convertImagePath(item.id)}}"></image>
-          <view>
+        <view class="colsview" a:for="{{list}}">
+          <image src="{{utils.convertImagePath(item.id)}}" onTap="queryDetail" data-id="{{item.id}}"></image>
+          <view onTap="queryDetail" data-id="{{item.id}}" class="goods">
             <text class="coltex">{{item.commodityName}}</text>
             <text class="coltex price">￥{{item.retailPrice}}</text>
           </view>
+          <input-number value='{{item.count}}' max='100' min='0' index='{{index}}' onChange=changeNumber></input-number>
         </view>
       </view>
       <view a:else class="sub-lists">
@@ -27,3 +28,4 @@
     </scroll-view>
   </view>
 </view> 
+<cart count='2' onSubmit='submitHandler'></cart>

@@ -1,14 +1,14 @@
 
-<!--goodsdetails.wxml-->
+<import-sjs name="utils" from="../goods/index.sjs"/>
 <import src="/wxParse/wxParse.axml"/>
 <view class="container">
   <view class="discount" hidden>{{dicount}}</view>
   <view class="pagetop">
-    <swiper  autoplay  style="width:100%;height:20vh;">
-      <block a:for="{{banners}}">
+    <swiper  autoplay style="width:100%;height:20vh;">
+      <block>
         <swiper-item>
           <view class="swiper-item">
-            <image src="{{item}}" class="slide-image" mode="scaleToFill" style="width:100%"></image>
+            <image src="{{utils.convertImagePath(goods.id)}}" class="slide-image" style="width:100%"></image>
           </view>
         </swiper-item>
       </block>
@@ -16,8 +16,8 @@
   </view>
   <!-- 商品详情介绍 -->
   <view class="products">
+    
     <view class="products_con">
-      <input type="hidden" id="productId" value="{{productId}}" sortguid="NULL" class="hidden_element" />
       <view class="sort_con">
         <view class="vpd-title">
           <view id="f_co">{{goods.commodityName}}</view>
@@ -101,13 +101,13 @@
       <view class="info">优惠券列表</view>
       <view class="done" onTap="closecouponinfo">关闭</view>
     </view>
-    <view a:if="{{couponinfo!=null||couponinfo.length>0}}" class="coupon_body_eveycoupon" a:for="{{couponinfo}}">
+    <view a:if="{{couponList.length>0}}" class="coupon_body_eveycoupon" a:for="{{couponList}}">
       <view class="v-ul">
         <view class="v-li">
           <view class="coupon_moneyandinfo" data-couponname="{{item.NAME}}" data-starttime="{{item.STARTDATE}}" data-endtime="{{item.ENDDATE}}" data-price="{{item.LIMITAMOUNT}}" data-useofrange="{{goodsinfo[item.GUID].NAME}}" data-detailedurl="{{goodsinfo[item.GUID].GOODSGUID}}">
             <view class="coupon_price">
               <view class="v-span">￥</view>{{item.AMOUNT}}
-            
+                        
             </view>
             <view class="coupon_info">
               <view class="coupon_name">{{item.NAME}}</view>
