@@ -1,0 +1,56 @@
+<view class="container">
+	<view class="classtab tb1">
+		<view onTap='choseorder' class="{{allorder}} tb1">全部</view>
+		<view onTap='choseorder' data-value="1" class="{{waitpay}} tb1">待付款</view>
+		<view onTap='choseorder' data-value="2" class="{{waitsend}} tb1">已付款</view>
+		<view onTap='choseorder' data-value="3" class="{{waitget}} tb1">已取消</view>
+		<view onTap='choseorder' data-value="5" class="{{done}} tb1">已完成</view>
+	</view>
+	<!-- <view class="item" a:for="{{orderlist}}" a:for-index="idx" a:for-item="itemName"> -->
+	<view class="item">
+		<view class="od_div">
+			<navigator url="../order/orderdetails?id={{itemName.orderguid}}">
+				<view class="od_top">
+					<text>订单编号：20162131231</text>
+					<text>下单时间：2018-7-22 10:10:30</text>
+					<text>订单总价：￥120</text>
+					<view class="od_cl"></view>
+				</view>
+			</navigator>
+			<view class="od_bottom">
+				<view class="od_bottom1">
+					<view class="od_status">
+						<view class="orderleft bluefont">已付款</view>
+						<view class="orderright bluefont" id="{{itemName.ORDERCODE}}_{{itemName.ORDERSTATE}}_{{itemName.orderguid}}" onTap="{{itemName.order_operator}}">
+							<view a:if="{{itemName.operator_desc != ''}}" class="blueBtn">									查看详情								</view>
+						</view>
+					</view>
+				</view>
+				<!-- end od_bottom -->
+			</view>
+		</view>
+	</view>
+
+	<view class="item">
+		<view class="od_div">
+			<navigator url="../order/orderdetails?id={{itemName.orderguid}}">
+				<view class="od_top">
+					<text>订单编号：20162131231</text>
+					<text>下单时间：2018-7-22 10:10:30</text>
+					<text>订单总价：￥120</text>
+					<view class="od_cl"></view>
+				</view>
+			</navigator>
+			<view class="od_bottom">
+				<view class="od_bottom1">
+					<view class="od_status">
+						<view class="orderleft bluefont">已付款</view>
+						<view class="orderright bluefont" id="{{itemName.ORDERCODE}}_{{itemName.ORDERSTATE}}_{{itemName.orderguid}}" onTap="{{itemName.order_operator}}">
+							<view a:if="{{itemName.operator_desc != ''}}" class="blueBtn">									查看详情								</view>
+						</view>
+					</view>
+				</view>
+				<!-- end od_bottom -->
+			</view>
+		</view>
+	</view>

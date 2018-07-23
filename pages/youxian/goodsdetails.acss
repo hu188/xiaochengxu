@@ -1,0 +1,671 @@
+/* pages/goods/goodsdetails.wxss */
+@import "/wxParse/wxParse.acss";
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color:#f5f5f5;
+}
+
+#productId{
+    display: none;
+}
+
+.hidden_element {
+    display: none;
+}
+.pagetop {
+    width: 100%;
+    height: auto;
+}
+
+.slide-image {
+    width: 100%;
+}
+
+.a-swiper-wrap {
+    color: #fff;
+}
+
+/******* goods details ******/
+.products{
+    width: 100%;
+}
+.pd-dscName{
+    width: 100%;
+    height: auto;
+    margin: 0px 0px 10px;
+    background: #fff;
+    display: block;
+}
+.products_con {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    color: #646565;
+    padding: 10px 0px;
+    display: block;
+    overflow: hidden;
+}
+
+.sort_con {
+    width: 100%;
+    display: block;
+    margin: 0px auto;
+    text-align: left;
+    background: #fff;
+    padding-top: 10px;
+}
+.vpd-title {
+    width: 100%;
+    /* color: #848689; */
+    color: #000;
+    display: block;
+    font-size: 16px;
+    line-height: 30px;
+    overflow: hidden;
+}
+.market_prices{
+       padding: 10px 80px;
+}
+
+.vpd-title view {
+    padding-left: 3%;
+}
+
+.products_con #basicInfoDB {
+    width: 100%;
+    margin: 0px auto;
+}
+.pd-dsc1 {
+     /* float: left;
+    border-bottom: 1px solid #f5f5f5;
+    width: 100%;
+    margin: 0 auto;
+    text-align: left;
+    padding: 2px 0; */
+    display:-webkit-flex;
+    display:flex;
+    border-bottom:1px solid #f5f5f5;
+    width:94%;
+    margin:0 auto;
+    flex-direction:row;
+    align-items:center;
+    text-align:left;
+
+}
+.pd-dsc1 view{
+    padding: 10px 0px;
+    font-size: 13px;
+}
+
+
+.title{
+    width: 80px;
+}
+.pd-dsc1 .title{
+    flex: 1;
+    width: 60px;
+    float:left;
+    padding: 10px 10px 10px 15px;  
+}
+
+.pd-dsc {
+    display: -webkit-flex;
+    display: flex;
+    border-bottom: 1px solid #f5f5f5;
+    /*width: 100%;*/
+    margin: 0 auto;
+    flex-direction: row;
+    background: #fff;
+    padding: 0px 4%;
+    align-items: center;
+    text-align: left;
+}
+
+.desctitle {
+    height: 30px;
+    line-height: 30px;
+}
+
+.rightdesc {
+    width: 100%;
+}
+.pd-dsc view{
+    padding: 10px 0px;
+    font-size: 13px;
+}
+
+.pd-dsc view.user_prices{
+    flex: 1;
+}
+.pd-dsc view.market_prices{
+    flex: 1;
+}
+#f_co{
+    color:#000;
+    padding-left:3%;
+    font-weight:bold;
+
+   
+}
+
+.products_con view {
+	color:#A3A4A3;
+    background-color: #fff;
+}
+
+.pd-dsc view:last-child {
+	color: #646565;
+}
+.pd-dsc view.productCount{
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    /*padding: 0px 40px;*/
+    align-items: center;
+}
+
+.pd-dsc view.user_prices {
+	color: #f60;
+}
+.product_details{
+    width: 100%;
+}
+.space_x{
+    width:100%;
+    padding:10px 0px;
+    display: block;
+    background:#fff;
+    font-size:13px;
+}
+.allbackground{
+    display: block;
+    border-bottom: 1px solid #0289d1;
+    color: #fff;
+    background: #0289d1;
+    text-align: center;
+    font-size:13px;
+}
+
+/*******bottom btn******/
+.bottom {
+    width: 100%;
+    bottom:0px;
+    position:fixed;
+    background-color: #fff;
+    border-top: 1px solid #e5e5e5;
+}
+.buybutton-style1 {
+    background: rgba(250,250,249,1);
+    bottom: 0rem;
+    height: 45px;
+    line-height: 45px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.buybutton-style1 .ulli{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.buybutton-style1 .buybutton-shoucang{
+    display: -webkit-flex;
+    align-items: center;
+}
+
+.buybutton-style1 .ulli:nth-child(1) {
+    text-align: center;
+}
+.buybutton-style1 .ulli:nth-child(2) {
+    text-align: center;
+    width: 200rpx;
+    box-sizing: border-box;
+}
+.buybutton-style1 .ulli:nth-child(3) {
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.buy_icon{
+    position: absolute;
+    z-index: 2;
+    background: #f60;
+    color: #fff;
+    width: 12px;
+    height: 12px;
+    line-height: 12px;
+    overflow: hidden;
+    top: 5px;
+    right:56%;
+    padding: 3px;
+    border-radius: 50%;
+    font-size: 12px;
+}
+
+.buybutton-style1 .buybutton-shoucang image {
+    width: 20px;
+    height: 20px;
+    margin:13px 0px 0px;
+}
+
+.buybutton-style1 .ulli:nth-child(4) {
+    width: 28%;
+    color: #fff;
+    background: #ff9600;
+}
+
+.buybutton-style1 .ulli:nth-child(5) {
+    background: #ef4746;
+    color: #fff;
+    width: 27%;
+}
+
+.pd-dsc .numbtn {
+    border: 1px solid #ccc;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    padding: 0px;
+}
+
+.productCountNum{
+    width: 50px;
+    height:25px;
+    line-height: 25px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    text-align:center;
+    padding:0px;
+}
+.pd-dsc .a-view.user_prices {
+    text-align: right;
+}
+.market_prices{
+    text-align: right;
+}
+
+.productCount{
+    justify-content: flex-end;
+}
+.pd-dsc .productCountNum {
+    padding: 0px;
+}
+.pd-dsc .productCountNumi {
+    padding:0px;
+}
+.productCountNum input{
+    width:50px;
+    height:25px;
+    line-height:25px;
+    text-align:center;
+    display:block;
+    min-height:25px;
+    box-sizing: border-box;
+}
+.product_details .bottom{
+    width:100%;
+    height:38px;
+    display:block;
+    border-bottom:1px solid #f2f2f2;
+    line-height:38px;
+    color: #fff;
+}
+
+
+.btndisabled {
+    background-color:#ccc;
+}
+
+.product_details {
+    margin-bottom: 50px;
+    padding-top: 9px;
+}
+
+.bgimage {
+    width:100%;
+    height: 100%;
+    margin-top: -10px;
+} 
+
+.nocontent {
+    text-align: center;
+    margin: 20px 0px;
+}
+
+.scanbutton-img {
+    height:50rpx;
+    width:50rpx;
+    margin-right:10rpx;
+}
+
+.cartbutton-img {
+    height:40rpx;
+    width:40rpx;
+    vertical-align: middle;
+}
+
+.scancodebtn {
+    display:-webkit-flex;
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    justify-content:center;
+}
+
+/*tab切换样式*/
+
+.nav {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-color: #fff;
+  border-bottom: 1px solid gainsboro;
+}
+
+.default {
+  line-height: 80rpx;
+  text-align: center;
+  flex: 1;
+  border-right: 1px solid gainsboro;
+  color: #000;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.red {
+  line-height: 80rpx;
+  text-align: center;
+  color: #fc5558;
+  flex: 1;
+  border-right: 1px solid gainsboro;
+  font-weight: bold;
+  font-size: 28rpx;
+}
+
+.show {
+  display: block;
+  text-align: center;
+  /*line-height:200rpx;*/
+  overflow: hidden;
+  background-color:#fff;
+}
+
+.hidden {
+  display: none;
+  text-align: center;
+  line-height: 200px;
+}
+
+/*tab切换样式*/
+.txtred {
+  color: #f60;
+  font-size: 16px;
+}
+.title_dt{
+  width:60px;
+  padding:10px 0px;
+  font-size:13px;
+
+}
+
+.v-dt{
+    width:60px;
+    padding:10px 0px;
+    font-size:13px;
+}
+.space{
+    width:100%;
+    height:46px;
+    display:block;
+    background:#fff;
+}
+.online_server {
+width:40px;
+height:40px;
+line-height:40px;
+position:fixed;
+right:20px;
+bottom:80px;
+z-index:999;
+background-color:red;
+border-radius:20px;
+
+}
+.online_server image {
+width:20px;
+height:20px;
+vertical-align:middle;
+
+}
+
+
+/*优惠券领取效果 开始*/
+.new-hotjob1 {
+  width: 95%;
+  padding: 10px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+  margin-bottom:10px;
+
+}
+
+.we_li {
+  width: 100%;
+  margin: 0 auto;
+  /*border-bottom: 1px #efefef solid;*/
+  height: 25px;
+}
+
+.hotjob-tit1 {
+  display: block;
+  overflow: hidden;
+  font-size: 13px;
+  color: #353535;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 25px;
+  float: left;
+}
+
+.gh {
+  height: 25px;
+  line-height: 27px;
+  /*width: 100px;*/
+  float: right;
+  text-align: right;
+  font-size: 12px;
+  margin-right: 35px;
+  color: #f60;
+}
+
+.icon-fujin {
+  display: block;
+  font-size: 25px;
+  color: #728ddc;
+  /*position: absolute;*/
+  /*top: 12px;*/
+  /*left: 11px;*/
+  /* border: 1px red solid; */
+  width: 20px;
+  height: 20px;
+  float:right;
+  margin-right:-62px;
+  margin-top:3px;
+}
+
+/*优惠券领取效果 结束*/
+
+/*优惠券弹出列表 开始*/
+.coupon_detailed_info {
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.7);
+  position: fixed;
+  z-index: 9;
+  top: 1000px;
+}
+
+.info_area {
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #f5f5f5;
+  position: absolute;
+  bottom: 0px;
+  z-index: 10;
+  height: 60%;
+  box-sizing: border-box;
+  padding: 30rpx;
+  overflow-y: auto;
+}
+.info_and_done {
+  display: -webkit-flex;
+  justify-content: space-between;
+  color: rgba(224, 120, 135, 1);
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding: 5rpx 0rpx 80rpx;
+}
+.selldone, .getdone {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  overflow: visible;
+  /* display:none;  */
+
+}
+
+/*优惠券底部弹出列表样式start*/
+.coupon_body_eveycoupon{
+  width:100%;
+}
+.no-branchw {
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background: #fff;
+  margin-bottom: 8px;
+  border-bottom: 1px solid #f7f7f7;
+  font-size: 14px;
+}
+.coupon_header_img {
+  width: 100%;
+  margin: 0px auto 10px;
+  box-sizing: border-box;
+  border-bottom: 2px dashed #fff;
+}
+
+.coupon_header_img image {
+  width: 100%;
+}
+
+.v-li {
+  width: 96%;
+  height: 60px;
+  margin: 0px auto;
+  margin-top: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+  padding: 5px 0px;
+  background-color: rgba(224, 120, 135, 1);
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.coupon_moneyandinfo {
+  width: 85%;
+  height: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.coupon_select {
+  width: 15%;
+  height: 70px;
+  background-color: #ff9000;
+  margin-top: -5px;
+  position: relative;
+}
+
+.coupon_price {
+  font-size: 20px;
+  line-height: 60px;
+  color: #fff;
+  font-family: "Arial";
+  text-align: center;
+  flex: 1;
+  border-right: 1px dashed #fff;
+  padding: 0px 5px;
+}
+
+.coupon_price span {
+  display: inline;
+}
+
+.coupon_info {
+  width: 70%;
+  padding: 0px 15px;
+  overflow: hidden;
+}
+
+.coupon_info view {
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  flex: 1;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+  color: #fff;
+}
+
+.v-span {
+  display: inline;
+}
+
+.coupon_select view {
+  text-align: center;
+  color: #fff;
+  font-size: 14px;
+  padding: 14px 12px;
+}
+.lingq{
+width:100%;
+display:flex;
+flex-direction:row;
+background-color:#fff;
+border-bottom:1px solid gainsboro;
+height:40px;
+}
+/*优惠券列表样式end*/
+
+.wxParse-img{
+  width: 375px;
+  height: 245px;
+}
+.price{
+    color: red;
+    font-weight: 700;
+    margin-right: 10px;
+}
+.discount{
+    height: 4vh;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    font-size: 28rpx;
+    z-index: 100;
+}

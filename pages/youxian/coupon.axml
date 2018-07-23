@@ -1,0 +1,47 @@
+<!--coupon.wxml-->
+<view class="coupon">
+  <!--顶部图片  -->
+  <view class="coupon_header_img">
+    <image src="http://mshop.yiyao365.cn/theme/default/images/1.jpg"></image>
+  </view>
+  <!--优惠券  -->
+  <view a:if="{{couponinfo==null||couponinfo.length<=0}}" class="no-branchw">商家还没有发布优惠券哦~~
+    
+  </view>
+  <!-- <view a:for="{{goodslist}}" a:for-index="idx" a:for-item="itemName"> -->
+  <view class="coupon_body_eveycoupon" a:for="{{couponinfo}}" a:for-index="idx" a:for-item="itemName">
+    <view class="coupon_li">
+      <view class="coupon_moneyandinfo"  onTap="getcouponinfo" data-couponname="{{itemName.NAME}}" data-starttime="{{itemName.STARTDATE}}" data-endtime="{{itemName.ENDDATE}}" data-price="{{itemName.LIMITAMOUNT}}" data-useofrange="{{goodsinfo[itemName.GUID].NAME}}" data-detailedurl="{{goodsinfo[itemName.GUID].GOODSGUID}}">
+        <view class="coupon_price">
+          <text>￥</text>
+          <text>{{itemName.AMOUNT}}</text>
+                
+        </view>
+        <view class="coupon_info">
+          <view class="coupon_name">{{itemName.NAME}}</view>
+          <view class="valid_date">有效期{{itemName.STARTDATE}} 至 {{itemName.ENDDATE}}</view>
+          <view class="limit_info">订单满 {{itemName.LIMITAMOUNT}} 元可用（不含运费）</view>
+        </view>
+      </view>
+      <view class="coupon_select">
+        <view onTap="getcoupon" data-getcouponid="{{itemName.GUID}}">立即领取</view>
+        <image class="selldone" src="../images/ends.png" a:if="{{itemName.GETEDNUM>=itemName.COUNT}}"></image>
+        <image class="getdone" src="../images/center.png" a:elif="{{userinfo[itemName.GUID].NUM>=itemName.maxnum}}"></image>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!--点击显示的详细信息  -->
+<view class="coupon_detailed_info" animation="{{animationData}}">
+  <view class="info_area">
+    <view class="info_and_done">
+      <view class="info">优惠券详情</view>
+      <view class="done" onTap="closecouponinfo">关闭</view>
+    </view>
+    <view class="coupon_name">{{couponname}}</view>
+    <view class="valid_date"><text>有效期</text><text>{{starttime}}</text> <text>至</text> <text>{{endtime}}</text></view>
+    <view class="limit_info"><text>订单满<text> <text>{{price}}</text> <text>元可用（不含运费）</text></view>
+    <view class="useofrange"><navigator url="{{detailedurl}}">适用范围：<text>{{useofrange}}</text></navigator></view>
+  </view>
+</view>

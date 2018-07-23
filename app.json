@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/youxian/index",
+    "pages/order/submitorder",
+    "pages/youxian/goodsdetails",
+    "pages/youxian/coupon",
+    "pages/youxian/goodssort",
+    "pages/mycenter/mycenter",
+    "pages/mycenter/coupon",
+    "pages/mycenter/orderlist"
+  ],
+  "window": {
+    "defaultTitle": "天任售货机平台",
+    "titleBarColor": "#0289d1",
+    "backgroundColor":"#ffffff"
+  }
+}
