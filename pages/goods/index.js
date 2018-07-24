@@ -7,7 +7,9 @@ Page({
     data: {
         types: [],
         list: [],
-        selectType: -1
+        selectType: -1,
+        count: 0,
+        total: 0
     },
     onLoad(e) {
         const { type } = getApp().globalData
@@ -92,10 +94,52 @@ Page({
         }
     },
     submitHandler() {
-        console.log(123)
+        const {total} = this.data
+      if (total > 0) {
+
+      } else {
+          my.showToast({
+              content:'亲,请选择您中意的商品哦！',
+            success: (res) => {
+              
+            },
+          });
+      }
     },
-    changeNumber (val) {
-        console.log(val)
+    changeNumber(val) {
+        let { list, count, total } = this.data
+        const { value, index, type } = val
+        let goods = list[index]
+        if (!goods.couponList) {
+            const sessionKey = getApp().globalData.sessionkey
+            http('coupon/goodsCoupon', {
+                sessionKey: sessionKey,
+                goodsId: goods.id
+            }, 1).then(res => {
+                goods.couponList = res
+            })
+        }
+        goods['count'] = value
+        if (type === 'plus') {
+            count++
+            total += goods.retailPrice
+        } else {
+            count--
+            total -= goods.retailPrice
+        }
+        for (let i =0;i<goods.couponList;i++) {
+            const coupon = goods.couponList[i]
+            if (goods.count * goods.retailPrice >= coupon.minimum) {
+              
+            } else {
+
+            }
+        }
+        this.setData({
+            list,
+            count,
+            total
+        })
     },
     // onShareAppMessage() {
     //     var that = this;

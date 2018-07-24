@@ -199,11 +199,21 @@
     flex-direction: column;
     justify-content: space-around;
 }
+.counter{
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items:flex-end;
+    padding-right:10px;
+}
 .sub-lists {
     padding-bottom:10px;
 }
 .coltex{
     text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .price {
     color: red;

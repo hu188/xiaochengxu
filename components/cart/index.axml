@@ -5,7 +5,8 @@
         <icon type="publishgoods_fill" color="#fff" size="32"></icon>
       </badge>
     </view>
-    <text class="tips">{{count*1 === 0 ? '未选购商品' : "总计￥"+price}}</text>
+    <text class="tips" a:if='{{count*1===0}}'>未选购商品</text>
+    <text class="tips" a:elif>总计<text style='color:#ff0000;'>￥{{total}}</text></text>
   </view>
   <view  onTap="onSubmit">去结算</view>
 </view>

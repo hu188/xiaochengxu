@@ -19,13 +19,15 @@
             <text class="coltex">{{item.commodityName}}</text>
             <text class="coltex price">￥{{item.retailPrice}}</text>
           </view>
-          <input-number value='{{item.count}}' max='100' min='0' index='{{index}}' onChange=changeNumber></input-number>
+          <view class="counter">
+            <input-number value='{{item.count || 0}}' max='100' min='0' index='{{index}}' onChange=changeNumber></input-number>
+          </view>
         </view>
       </view>
       <view a:else class="sub-lists">
-                <text class="empty">暂无商品</text>
+        <text class="empty">暂无商品</text>
       </view>
     </scroll-view>
   </view>
-</view> 
-<cart count='2' onSubmit='submitHandler'></cart>
+</view>
+<cart count='{{count}}' total='{{total}}' onSubmit='submitHandler'></cart>
