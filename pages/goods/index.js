@@ -9,7 +9,8 @@ Page({
         list: [],
         selectType: -1,
         count: 0,
-        total: 0
+        total: 0,
+        selectGoods:[]
     },
     onLoad(e) {
         const { type } = getApp().globalData
@@ -94,51 +95,62 @@ Page({
         }
     },
     submitHandler() {
-        const {total} = this.data
-      if (total > 0) {
-
-      } else {
-          my.showToast({
-              content:'亲,请选择您中意的商品哦！',
-            success: (res) => {
-              
-            },
-          });
-      }
+        const { total } = this.data
+        if (total > 0) {
+            getApp().globalData.goodsList = this.data.selectGoods
+         my.navigateTo({
+                url: '../submitOrder/index'
+            });
+        } else {
+            my.showToast({
+                content: '亲,请选择您中意的商品哦！'
+            });
+        }
     },
-    changeNumber(val) {
+    async changeNumber(val) {
         let { list, count, total } = this.data
         const { value, index, type } = val
         let goods = list[index]
-        if (!goods.couponList) {
-            const sessionKey = getApp().globalData.sessionkey
-            http('coupon/goodsCoupon', {
-                sessionKey: sessionKey,
-                goodsId: goods.id
-            }, 1).then(res => {
-                goods.couponList = res
-            })
-        }
-        goods['count'] = value
         if (type === 'plus') {
             count++
-            total += goods.retailPrice
         } else {
             count--
-            total -= goods.retailPrice
         }
-        for (let i =0;i<goods.couponList;i++) {
-            const coupon = goods.couponList[i]
-            if (goods.count * goods.retailPrice >= coupon.minimum) {
-              
-            } else {
-
+        goods['count'] = value
+        if (goods.commodityCouponRelations.length > 0) {
+            for (let i = 0; i < goods.commodityCouponRelations.length; i++) {
+                const coupon = goods.commodityCouponRelations[i].coupon
+                if (goods.count * goods.retailPrice >= coupon.minimum * 1) {
+                    goods['coupons'] = coupon
+                    break
+                } else {
+                    goods.coupon = {}
+                }
             }
+        } else {
+           goods.coupon = {} 
         }
+        const { coupons } = goods
+        if (coupons && coupons.id) {
+            const { couponType } = coupons
+            if (couponType * 1 === 5) {
+                goods['discount'] = goods.count * goods.retailPrice * coupons.discount * 0.01
+            } else if (couponType * 1 === 6) {
+                goods['discount'] = coupons.discount
+            }
+        } else {
+            goods['discount'] = 0
+        }
+        list[index] = goods
+        const selectGoods = list.filter(item => item.count && item.count > 0)
+        let totalPrice = selectGoods.reduce((total, cur) => {
+            return total + cur.count * cur.retailPrice - cur.discount
+        }, 0)
         this.setData({
             list,
             count,
-            total
+            total: totalPrice,
+            selectGoods: selectGoods
         })
     },
     // onShareAppMessage() {

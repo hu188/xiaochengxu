@@ -1,4 +1,4 @@
-<!--pages/order/submitorder.wxml-->
+<import-sjs name="price" from="../../utils/common.sjs"/>
 <view class="container">
     <view class="addrdiv">
         <view class="line">
@@ -9,7 +9,7 @@
             <image src="../images/line.png"></image>
             <image src="../images/line.png"></image>
         </view>
-        <view class="address {{detailsnonestr}}">
+        <view class="address">
             <view class="address-detail">
                 <view>
                     <text>地址：天任电子便利点1</text>
@@ -28,7 +28,8 @@
     <view class="produts-list" a:for="{{goodsList}}" a:for-index="idx" a:for-item="item">
         <view class="pro-details">
             <view>{{item.commodityName}}</view>
-            <view><text class="goodsNum">x{{item.count}}</text><text>￥{{item.costPrice}}</text></view>
+            <view>已优惠:{{item.discount}}</view>
+            <view><text>￥{{price.price(item.retailPrice)}}</text><text class="goodsNum">x{{item.count}}</text></view>
         </view>
     </view>
     <view class="pro-pay">
@@ -56,7 +57,7 @@
         </picker>
     </view>
     <view class="price-list">
-        <view class="orderamount">商品金额：￥{{totalPrice}}</view>
+        <view class="orderamount">商品金额：￥{{price.price(totalPrice)}}</view>
         <view a:if="{{usedcouponinfo != ''}}" class="orderamount">{{usedcouponinfo}}</view>
     </view>
     <view class="submit-btn">

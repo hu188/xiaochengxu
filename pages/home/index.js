@@ -162,60 +162,12 @@ Page({
       }
     })
   },
-
-  //测试获取商品优惠券信息
-  goodscoupon: function () {
-    my.httpRequest({
-      url: 'http://www.tianrenyun.com.cn/vendor/api/coupon/goodsCoupon', // 该url是自己的服务地址，实现的功能是服务端拿到authcode去开放平台进行token验证
-      //data: post_data,
-      data: {
-        "id": "168",
-        "sessionKey": "53CD4E223DB1F91E"
-      },
-      method: 'POST',
-      header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      success: (res) => {
-        console.log('商品优惠信息');
-        console.log(res.data);
-      }
-    })
-  },
-
-  //测试获取优惠券列表信息
-  couponlist: function () {
-    my.httpRequest({
-      url: 'http://www.tianrenyun.com.cn/vendor/api/coupon/list',
-      //data: post_data,
-      data: {
-        "sessionKey": "53CD4E223DB1F91E"
-      },
-      method: 'POST',
-      header: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      success: (res) => {
-        console.log(res.data);
-      }
-    })
-  },
-
-  //获取设备位置
-  GetshebeiLocation: function (e) {
-    var longitude = e.currentTarget.dataset.lng;
-    var latitude = e.currentTarget.dataset.lat;
-    var name = e.currentTarget.dataset.deviceName;
-    var address = e.currentTarget.dataset.deviceProperty;
-    my.openLocation({
-      longitude: '121.549697',
-      latitude: '31.227250',
-      name: '支付宝',
-      address: '杨高路地铁站',
-    });
-  },
   tapHandler(e) {
     if (e * 1 === 2) {
       scancode()
     } else if (e * 1 === 3) {
       my.navigateTo({
-        url: '../goods/index'
+        url: '../mycenter/index'
       })
     }
   }

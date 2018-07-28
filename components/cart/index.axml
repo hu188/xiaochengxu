@@ -1,3 +1,4 @@
+<import-sjs name="utils" from="../../utils/common.sjs"/>
 <view class="cart">
   <view>
     <view class="icon">
@@ -6,7 +7,7 @@
       </badge>
     </view>
     <text class="tips" a:if='{{count*1===0}}'>未选购商品</text>
-    <text class="tips" a:elif>总计<text style='color:#ff0000;'>￥{{total}}</text></text>
+    <text class="tips" a:elif>总计<text style='color:#ff0000;'>￥{{utils.price(total)}}</text></text>
   </view>
   <view  onTap="onSubmit">去结算</view>
 </view>

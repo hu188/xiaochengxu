@@ -20,15 +20,16 @@ Page({
   },
   onLoad: function (options) {
     const { goodsList } = app.globalData
+    
     this.setData({
       goodsList
     })
     let totalPrice = 0
     goodsList.reduce((prev, cur) => {
-      totalPrice += cur.costPrice * cur.count
+      totalPrice += cur.retailPrice * cur.count-cur.discount
     }, 0)
     this.setData({
-      totalPrice
+      totalPrice: totalPrice
     })
     const sessionKey = getApp().globalData.sessionkey
     http('coupon/list', { sessionKey: sessionKey }, 1).then(res => {

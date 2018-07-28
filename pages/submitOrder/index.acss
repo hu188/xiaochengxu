@@ -37,6 +37,7 @@
 .address{
     width: 100%;
     background: #fff;
+    margin-bottom: 20rpx;
 }
 .line{
     width: 100%;
@@ -81,14 +82,11 @@
 .produts-list{
     width: 100%;
     background: #fff;
-    margin-top: 10px;
     display: flex;
     flex-direction: row;
     padding: 10px;
     box-sizing: border-box;
     border-top: 1px solid #e5e5e5;
-    border-bottom: 1px solid #e5e5e5;
-
 }
 .pro-img{
     border: 0px solid #ccc;
@@ -121,9 +119,15 @@
 .pro-details view:nth-of-type(2){
     display: flex;
     align-items: center;
+    font-size: 20rpx;
+    margin-right: 10px;
+}
+.pro-details view:nth-of-type(3){
+    display: flex;
+    align-items: center;
 }
 .goodsNum {
-    margin-right: 40rpx;
+    margin-left: 20rpx;
     color: #999;
 }
 .pro-pay{

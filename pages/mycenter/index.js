@@ -6,7 +6,6 @@ Page({
   //...common,
   ...util,
   data: {
-    motto: '加载中......',
     userInfo: {},
     healthInfo: {},
     dfk: 0,
@@ -28,9 +27,6 @@ Page({
     if (app.globalData.isGetedAuth == 0) {
 
     } else {
-      my.showLoading({
-        content: '加载中...',
-      });
 
       //判断是否已经登录
       if (!util.isNull(my.getStorageSync({ key: 'userphone' }).data)) {

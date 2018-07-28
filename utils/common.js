@@ -10,6 +10,5 @@ export default {
   //去掉首位空格
   trim(str) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
-  },
-
+  }
 };

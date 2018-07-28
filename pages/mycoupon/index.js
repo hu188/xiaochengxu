@@ -103,9 +103,6 @@ Page({
 
                   app.globalData.getting_userinfo = 1;
 
-                  my.showLoading({
-                    content: '加载中...',
-                  });
                   //如果是非登录版本或用会员卡登录版本，在此操作中创建用户
                   if (app.globalData.isNeedLogin == '0' || app.globalData.isNeedLogin == '2') {
                     //根据用户user_id请求已办卡用户的手机号，2018.2.7新增start
@@ -219,9 +216,6 @@ Page({
       });
       return;
     } else {
-      my.showLoading({
-        content: '加载中...',
-      });
       ajax_my_coupon(that);
     }
   },

@@ -1,5 +1,6 @@
 
 <import-sjs name="utils" from="../goods/index.sjs"/>
+<import-sjs name="price" from="../../utils/common.sjs"/>
 <import src="/wxParse/wxParse.axml"/>
 <view class="container">
   <view class="discount" hidden>{{dicount}}</view>
@@ -30,7 +31,7 @@
       </view>
       <view class="pd-dsc clearfix">
         <view class="title">零售价</view>
-        <view class="rightdesc market_prices">￥{{goods.costPrice}}</view>
+        <view class="rightdesc market_prices">￥{{price.price(goods.retailPrice)}}</view>
       </view>
       <view class="pd-dsc clearfix">
         <view class="left title">数量</view>
@@ -87,7 +88,7 @@
     <view class="buybutton-style1">
       <view class="ulli price">
         <text>合计:</text>
-        <text>{{buynum*goods.costPrice}}</text>
+        <text>{{buynum*goods.retailPrice}}</text>
       </view>
       <view class="ulli allbackground">
         <view onTap="goToAddrTap">立即购买</view>
