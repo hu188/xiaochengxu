@@ -1,7 +1,7 @@
 //获取应用实例
 const app = getApp();
 //import common from '/utils/common';
-import util from '/utils/util';
+import util from '../../utils/util';
 import { http } from '../../utils/http'
 var WxParse = require('../../wxParse/wxParse.js');
 Page({
@@ -12,7 +12,7 @@ Page({
     autoplay: true,
     interval: 5000,
     duration: 1000,
-    buynum: 1,
+    buynum: 0,
     stockcount: 0,
     collectevent: 'doCollectTap',
     collecticon: 's-5',
@@ -32,8 +32,8 @@ Page({
     shopping_imgurl: '',
     seckillid: '',
     isover: 0,
-    goods: {},
-    couponList: []
+    discount: 0,
+    goods: {}
   },
   /*tab切换*/
   selected: function (e) {
@@ -62,62 +62,90 @@ Page({
     const { id } = e
     if (e.id != '' && e.id != undefined) {
       this.queryDetail(id)
-      this.queryCouponList(id)
     }
   },
   /**增加数量 */
-  productCountPlus: function () {
+  productCountPlus: function (e) {
+    const { item } = e.target.dataset
     let { buynum } = this.data
     buynum += 1
-    this.setData({ buynum: buynum, cartgoodssorts: buynum });
-    const { couponList, goods } = this.data
-    if (couponList.length === 0 && !goods.couponList) {
-      this.queryCouponList(goods.id)
+    const { goods } = this.data
+    goods['count'] = buynum
+   goods['coupons'] = item
+    const { coupons } = goods
+    if (coupons && coupons.id) {
+      const { couponType } = coupons
+      if (couponType * 1 === 5) {
+        goods['discount'] = goods.count * goods.retailPrice * coupons.discount * 0.01
+      } else if (couponType * 1 === 6) {
+        goods['discount'] = coupons.discount
+      }
+    } else {
+      goods['discount'] = 0
     }
-  },
-  /**查询商品的优惠券 */
-  queryCouponList(id) {
-    const sessionKey = getApp().globalData.sessionkey
-    http('coupon/goodsCoupon', {
-      sessionKey: sessionKey,
-      goodsId: id
-    }, 1).then(res => {
-      this.setData({
-        couponList: res
-      });
+    this.setData({
+      goods,
+      buynum: buynum,
+      discount:goods.discount
     })
   },
   /**减少数量 */
-  productCountMinus: function () {
+  productCountMinus: function (e) {
+    const {item} = e.target.dataset
     if (this.data.buynum <= 1) {
-      my.showToast({
-        type: 'fail',
-        content: '最少购买一个!',
+      wx.showToast({
+        icon: 'none',
+        title: '最少购买一个!',
         duration: 1000
       });
       return;
     }
-    var buynum = this.data.buynum - 1;
-    this.setData({ buynum: buynum });
+    let { buynum } = this.data
+    buynum -= 1
+    const { goods } = this.data
+    goods['count'] = buynum
+   goods['coupons'] = item
+    const { coupons } = goods
+    if (coupons && coupons.id) {
+      const { couponType } = coupons
+      if (couponType * 1 === 5) {
+        goods['discount'] =goods.count*goods.retailPrice -  goods.count * goods.retailPrice * coupons.discount * 0.01
+      } else if (couponType * 1 === 6) {
+        goods['discount'] = coupons.discount
+      }
+    } else {
+      goods['discount'] = 0
+    }
+    this.setData({
+      goods,
+      discount:goods.discount,
+      buynum: buynum
+    })
   },
   goIndexTap: function () {
     //回到首页
-    my.switchTab({
+    wx.switchTab({
       url: '../home/index'
     })
   },
   //跳转到提交订单页,立即支付购买功能
   goToAddrTap: function () {
     let { goods, buynum } = this.data
-    goods['count'] = buynum
-    goods.couponList = []
+    if (buynum === 0) {
+      wx.showToast({
+        icon: 'none',
+        title: '最少购买一个!',
+        duration: 1000
+      });
+      return;
+    }
     getApp().globalData.goodsList = [goods]
-    my.navigateTo({
+    wx.navigateTo({
       url: '../submitOrder/index'
     })
   },
   goToCart: function () {
-    my.navigateTo({
+    wx.navigateTo({
       url: '../cart/index'
     })
   },
@@ -135,7 +163,7 @@ Page({
   /**查询商品详情 */
   queryDetail(id) {
     http('goods/queryGoodsDetail', { "goodsId": id }, 1).then(res => {
-      let {banners} = this.data
+      let { banners } = this.data
       const path = getApp().globalData.imgPath + res.id + '.jpg'
       banners.push(path)
       this.setData({

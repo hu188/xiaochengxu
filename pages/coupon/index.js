@@ -1,29 +1,27 @@
 // pages/index/scancode.js
 //获取应用实例
+import { http } from '../../utils/http.js'
 const app = getApp();
 Page({
   data: {
-    bindevent: ''
+    couponList: []
   },
-
   onLoad: function () {
-    my.setNavigationBar({
-      title: '优惠券领取'
-    });
-    var that = this;
-    console.log('1212');
-    ali_coupon_list(that);
+    const sessionKey = getApp().globalData.sessionkey
+    http('coupon/all', { sessionKey: sessionKey }, 1).then(res => {
+      this.setData({
+        couponList: res
+      })
+    })
   },
   onShow(e) {
-    var that = this;
-    //ali_coupon_list(that);
 
   },
 
   //显示详细信息
   getcouponinfo: function (e) {
     // console.log(e.currentTarget.dataset)
-    const animation = my.createAnimation({
+    const animation = wx.createAnimation({
       duration: 500,
       timingFunction: 'linear',
     })
@@ -54,31 +52,3 @@ Page({
     })
   }
 })
-
-//获取优惠券列表方法封装
-function ali_coupon_list(that) {
-
-  my.httpRequest({
-    url: 'http://www.tianrenyun.com.cn/vendor/api/coupon/list',
-    data: {
-      "sessionKey": "53CD4E223DB1F91E"
-    },
-    method: 'POST',
-    header: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    success: function (res) {
-      console.log('优惠券列表');
-      console.log(res.data);
-
-      my.hideLoading();
-      that.setData({
-        couponinfo: res.data.data
-      });
-
-    },
-    fail: function () {
-      my.hideLoading();
-    }
-  });
-}

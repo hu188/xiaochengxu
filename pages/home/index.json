@@ -1,5 +1,8 @@
 {
+  "navigationBarTitleText": "首页",
   "usingComponents":{
-    "tabbar":"../../components/tabBar/index"
+    "i-tab": "../../components/tabbar/index",
+    "i-toast": "../../components/toast/index",
+    "i-map":"../../components/map/index"
   }
 }

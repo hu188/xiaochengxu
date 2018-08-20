@@ -1,0 +1,14 @@
+<wxs module="price" src="../../utils/common.wxs" />
+<view class="zhye">
+  账号余额(元)
+</view>
+<view class="zhye_1">
+  {{price.price(balance)}}
+</view>
+<navigator openType="redirectTo" url="../recharge/index">
+  <view class="smwz">
+    <view bindtap="saoma" class="smgw">
+      充值
+    </view>
+  </view>
+</navigator>

@@ -1,0 +1,20 @@
+<view class="container">
+  <view class="products">
+    <view class="tation-up">
+      <view class="tation-dir" data-statu="open">
+        <view class="pos_item">当前位置：{{address}}</view>
+      </view>
+    </view>
+  </view>
+  <view class="map">
+  <i-map point='{{point}}' markers='{{markers}}'  points='{{includePoints}}'></i-map>
+  </view>
+  <i-tab-bar current="{{ current }}" color="#f759ab" fixed style='width:100%' bindchange="handleChange">
+    <i-tab-bar-item key="homepage" icon="homepage" current-icon="homepage_fill" title="首页"></i-tab-bar-item>
+    <i-tab-bar-item key="homepage" icon="homepage" current-icon="homepage_fill" title="订单"></i-tab-bar-item>
+    <!-- <i-tab-bar-item key="group" icon="camera_fill" current-icon="group_fill" title=" 扫我"></i-tab-bar-item> -->
+    <i-tab-bar-item key="mine" icon="mine" current-icon="mine_fill" title="我的"></i-tab-bar-item>
+  </i-tab-bar>
+</view>
+<button open-type='getUserInfo'  bindgetuserinfo='getUserInfoFun' class='auth' wx:if='{{!auth}}'></button>
+  <i-toast id="toast" />

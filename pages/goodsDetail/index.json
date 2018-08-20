@@ -1,1 +1,7 @@
-{}
+{
+  "navigationBarTitleText": "商品详情",
+  "usingComponents": {
+    "cart": "../../components/cart/index",
+    "input-number": "../../components/input-number/index"
+  }
+}

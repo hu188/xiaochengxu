@@ -1,0 +1,17 @@
+<view class="disl">
+  <view bindtap="xuanz" class="pldh {{xz==index?'actss':''}}" data-id="{{index}}" wx:for="{{czlist}}">
+    <image src="/sudu8_shop/resource/image/checked.png"></image>
+    <view class="renmb">
+      {{item.money}}
+    </view>
+    <view class="quan">
+      送{{item.giveMoney}}元
+    </view>
+  </view>
+</view>
+<view class="smwz">
+  <view bindtap="czsave" class="smgw">
+    确认支付
+  </view>
+</view>
+<i-toast id="toast" />

@@ -1,0 +1,258 @@
+.container {
+    background-color: #fff;
+    text-align: center;
+    width:100%;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.map {
+  width: 100%;
+  height: 85vh;
+}
+map{
+  width: 100%;
+}
+.bgimage {
+    width:75%;
+    height: 950rpx;
+}
+
+.btnimage {
+    height:80rpx;
+}
+
+.btndisabled {
+    background-color:#ccc;
+}
+.products{
+  width:100%;
+  height: 7vh;
+display: flex;
+align-items: center;
+}
+
+/*选择配送地址弹框样式开始*/
+.a{
+    width:100%;
+    position:fixed;
+    top:0;
+    left:0;
+    z-index:1001;
+    height:100%;
+}
+#dialogBg {
+  width:100%;
+  height:100%;
+  background-color:#000000;
+  opacity:.5;
+  filter:alpha(opacity=60);
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:2;
+}
+.drawer_box { 
+  width: 650rpx;    
+  position: fixed;  
+  top: 50%;  
+  left: 0;  
+  z-index: 1001;  
+  background: #FAFAFA;  
+  margin: -170px 50rpx 0 50rpx;  
+  border-radius: 10px;  
+}
+.drawer_box .image {
+  width: 100%;
+  height:240px;
+  display:inline-block;
+  overflow:hidden;
+}
+.dialogIco {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    margin-left: -25px;
+  }
+.dialogIco_arrow {
+    width:40px;
+    height:40px;
+    position:relative;
+    top:-17px;
+    left:0px;
+    z-index:998;
+  }
+.drawer_title{ 
+  font:20px "microsoft yahei";
+  text-align:center;
+  margin:0 auto;
+  border-bottom:1px dotted #ccc;
+  letter-spacing:1px;
+  padding:10px 0;
+  background-color:#64C14C;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+  color:#ffffff;
+  font-size:16px;
+  height:50px;
+  line-height:65px;
+}
+/*.drawer_title{ 
+  padding:15px;  
+  font: 20px "microsoft yahei";  
+  text-align: center;  
+}*/
+.drawer_content { 
+  overflow-y: scroll; /*超出父盒子高度可滚动*/ 
+}
+.grid { display: -webkit-box; display: box; height:44px;} 
+.grid { 
+  display: -webkit-box;
+   display: box; 
+} 
+.top{ 
+  padding-top:8px;  
+} 
+.location-icon {
+  width:55rpx;
+  height:36px;
+  line-height:100rpx;
+  margin-top:-7px;
+}
+.tck_sz {
+    background: #64C14C;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 0px 7px;
+    height: 23px;
+  }
+.pos_select{
+  font-size:14px;
+  line-height:23px;
+  width:83%;
+  text-align:left;
+  display:-webkit-box;
+  display: box;
+}
+.location-icon1{
+  width:15px;
+  height:15px;
+  opacity:0.6;
+}
+.service_store{
+    text-align: center;
+    background-color: #ECECEC;
+    padding: 8px;
+    height:28px;
+    /*line-height:28px;*/
+    font-size:15px;
+    color: #929292;
+  } 
+  .btn_ok{ 
+  text-align:center;
+  color:#3CC51F;
+  background-color:#ECECEC;
+  border-bottom-left-radius:10px;
+  border-bottom-right-radius:10px;
+
+}
+.submitBtn {
+    width: 90px;
+    height: 30px;
+    line-height: 30px;
+    font-family: 微软雅黑, "microsoft yahei";
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    background-color: rgb(100, 193, 76);
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+    margin: 10px 0px;
+    border-radius: 15px;
+}
+/**/
+.radio-group{
+    font-size: 14rpx;
+    display: flex;
+    flex-direction: column;
+  }
+  .item_fix { 
+  display: flex; 
+}
+.line-style{
+  font-size:14px;
+}
+.top_b{
+  padding:8px 8px 8px 18px;
+
+}
+.item-radio{
+  transform:scale(.8); 
+}
+.wx-image {
+  width:20px;
+  height:20px;
+  margin-right:5px;
+  margin-left:5px;
+}
+
+/*选择配送地址弹框样式结束*/
+
+/*选择地址start*/
+.tation-up {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.tation-up .tation-dir {
+  background: #e9e9e9;
+  padding: 0px 10px;
+  border-radius: 15px;
+  width: 80%;
+  height: 30px;
+  line-height: 30px;
+}
+
+.tation-dir {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pos_item {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  float: left;
+  width: 96%;
+  color: #515151;
+  font-size: 14px;
+}
+.icon-bottom {
+  float: left;
+}
+
+.arrow_d {
+  width: 13px;
+  height: 13px;
+}
+
+/*选择地址end*/
+
+.auth{
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}

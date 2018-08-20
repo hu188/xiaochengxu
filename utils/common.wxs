@@ -1,0 +1,9 @@
+module.exports =  {
+    price: function(p) {
+      if (p< 0) {
+        return '-'+Number(Math.abs(p)).toFixed(2)
+      } else {
+       return Number(Math.abs(p)).toFixed(2)
+      }
+    }
+}

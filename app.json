@@ -1,17 +1,29 @@
 {
   "pages": [
+    "pages/goods/index",
     "pages/home/index",
     "pages/submitOrder/index",
     "pages/goodsDetail/index",
     "pages/coupon/index",
-    "pages/goods/index",
     "pages/mycenter/index",
     "pages/mycoupon/index",
-    "pages/order/index"
+    "pages/order/index",
+    "pages/orderDetail/index",
+    "pages/balance/index",
+    "pages/recharge/index"
   ],
   "window": {
     "defaultTitle": "天任售货机平台",
     "titleBarColor": "#0289d1",
-    "backgroundColor":"#ffffff"
+    "backgroundColor": "#ffffff"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/goods/index"
+    },{
+        "pagePath": "pages/order/index"
+    },{
+      "pagePath": "pages/mycenter/index"
+    }]
   }
 }

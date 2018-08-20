@@ -1,14 +1,21 @@
 Component({
-  props:{
-    onSubmit: (data) => console.log(data),
-    count: 0,
-    total: 0
+  properties: {
+    count: {
+      type: Number,
+      value: 0
+    },
+    total: {
+      type: Number,
+      value: 0
+    },
+    discount: {
+      type: Number,
+      value: 0
+    }
   },
-  didUpdate(prevProps,prevData){},
-  didUnmount(){},
-  methods:{
-    onSubmit(ev){
-      this.props.onSubmit()
+  methods: {
+    onSubmit(ev) {
+      this.triggerEvent('onSubmit')
     },
   },
 })

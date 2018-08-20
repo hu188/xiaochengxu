@@ -13,3 +13,4 @@ require('../../pages/goods/index');
 require('../../pages/mycenter/index');
 require('../../pages/mycoupon/index');
 require('../../pages/order/index');
+require('../../pages/orderDetail/index');

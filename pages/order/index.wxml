@@ -1,0 +1,41 @@
+<wxs module="price" src="../../utils/common.wxs"/>
+<view class="container">
+	<view class="classtab tb1">
+		<view catchtap='choseorder' hidden class="{{selectIndex*1 === 0 ? 'border' : ''}} tb1">全部</view>
+		<view catchtap='choseorder' data-value="1" class="{{selectIndex*1 === 1 ? 'border' : ''}} tb1">待付款</view>
+		<view catchtap='choseorder' data-value="2" class="{{selectIndex*1 === 2 ? 'border' : ''}} tb1">已付款</view>
+		<view catchtap='choseorder' data-value="3" class="{{selectIndex*1 === 3 ? 'border' : ''}} tb1">已取消</view>
+		<view catchtap='choseorder' data-value="5" class="{{selectIndex*1 === 5 ? 'border' : ''}} tb1">已完成</view>
+	</view>
+<scroll-view scroll-y>
+  <view class="item" wx:for="{{orderlist}}">
+		<view class="od_div">
+			<navigator url="../orderDetail/index?orderNo={{item.orderNo}}">
+				<view class="od_top">
+					<text>订单编号：{{item.orderNo}}</text>
+					<text>下单时间：{{item.createTime}}</text>
+					<text>订单总价：￥{{price.price(item.totalprice)}}</text>
+					<text>实付金额：￥{{price.price(item.payment)}}</text>
+				</view>
+			</navigator>
+			<view class="od_bottom">
+				<view class="od_bottom1">
+					<view class="od_status">
+						<view class="orderleft bluefont" wx:if="{{item.status === 1}}">待付款</view>
+						<view class="orderleft bluefont" wx:if="{{item.status === 2}}">已支付</view>
+						<view class="orderleft bluefont" wx:if="{{item.status === 3}}">已取消</view>
+						<view class="orderleft bluefont" wx:if="{{item.status === 4}}">已完成</view>
+						<view class="orderright bluefont">
+							<view wx:if="{{item.status === 1}}" class="blueBtn" catchtap='pay' data-orderNo='{{item.orderNo}}'>去支付</view>
+							<view wx:else class="blueBtn" catchtap='view' data-orderNo='{{item.orderNo}}'>查看</view>
+						</view>
+					</view>
+				</view>
+			</view>
+      </view>
+		</view>
+    </scroll-view>
+	</view>
+  
+  <i-toast id="toast" />
+  <i-tab current='order'></i-tab>

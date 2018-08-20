@@ -1,0 +1,64 @@
+<wxs module="price" src="../../utils/common.wxs"/>
+<view class="container">
+    <view class="addrdiv">
+        <view class="line">
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+        </view>
+        <view class="address">
+            <view class="address-detail">
+                <view>
+                    <text>地址：天任电子便利点</text>
+                </view>
+            </view>
+        </view>
+        <view class="line">
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+            <image src="../images/line.png"></image>
+        </view>
+    </view>
+    <view class="produts-list" wx:for="{{goodsList}}" wx:for-index="idx" wx:for-item="item" wx:key='{{index}}'>
+        <view class="pro-details">
+            <view>{{item.commodityName}}</view>
+            <view>已优惠:{{item.discount}}</view>
+            <view>
+                <text>￥{{price.price(item.retailPrice)}}</text>
+                <text class="goodsNum">x{{item.count}}</text>
+            </view>
+        </view>
+    </view>
+    <view class="pro-pay">
+        <picker bindchange="bindPaymentChange" value="{{paymentindex}}" range="{{paymentarray}}">
+            <view class="picker">
+                <view>支付方式</view>
+                <view>{{paymentarray[paymentindex]}}</view>
+            </view>
+        </picker>
+    </view>
+    <view class="pro-pay">
+        <picker onChange="bindCouponChange" value="{{couponIndex}}" range="{{couponList}}" range-key='couponName'>
+            <view class="picker">
+                <view>优惠券</view>
+                <view>{{couponList[couponIndex].couponName}}</view>
+            </view>
+        </picker>
+    </view>
+    <view class="price-list">
+        <view class="orderamount">商品金额：￥{{price.price(totalPrice)}}</view>
+    </view>
+    <view class="submit-btn">
+        <view>实付款:                        
+            <label class="orderamount">￥{{price.price(realPrice)}}</label>
+        </view>
+        <view class="allbackground" catchtap="submitOrderTap">提交订单</view>
+    </view>
+</view>
+<i-toast id="toast" />

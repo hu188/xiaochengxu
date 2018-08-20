@@ -1,3 +1,7 @@
 {
-    "defaultTitle": "我的订单"
+   "navigationBarTitleText": "我的订单",
+   "usingComponents": {
+    "i-toast": "../../components/toast/index",
+    "i-tab": "../../components/tabbar/index"
+  }
 }

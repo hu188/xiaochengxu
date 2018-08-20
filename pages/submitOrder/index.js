@@ -1,75 +1,75 @@
 const app = getApp();
-import common from '/utils/common';
-import util from '/utils/util';
-import { http } from '../../utils/http'
+import common from '../../utils/common';
+import util from '../../utils/util';
+import {
+  http
+} from '../../utils/http'
+const {
+  $Toast
+} = require('../../components/base/index');
 Page({
   ...common,
   ...util,
   data: {
     buynum: 1,
     guid: '',
-    paymentarray: ['支付宝支付'],
+    paymentarray: ['微信支付','余额支付'],
     couponguid: '',
     cindex: 0,
-    couponlimit: 0,
-    couponcutdownarray: '',
-    couponlimitarray: '',
     goodsList: [],
     order: {},
-    totalPrice: 0
+    totalPrice: 0,
+    couponList: [],
+    paymentindex: 0,
+    couponIndex: 0,
+    realPrice: 0,
+    balance: 0
   },
   onLoad: function (options) {
-    const { goodsList } = app.globalData
-    
+    const {
+      goodsList
+    } = app.globalData
     this.setData({
       goodsList
     })
     let totalPrice = 0
     goodsList.reduce((prev, cur) => {
-      totalPrice += cur.retailPrice * cur.count-cur.discount
+      totalPrice += cur.retailPrice * cur.count - cur.discount
     }, 0)
     this.setData({
-      totalPrice: totalPrice
+      totalPrice: totalPrice,
+      realPrice: totalPrice
     })
     const sessionKey = getApp().globalData.sessionkey
-    http('coupon/list', { sessionKey: sessionKey }, 1).then(res => {
-      var couponinfo = res;
-      var couponsguid = Array();
-      var couponsname = Array();
-      var coupondiscount = Array();//折扣
-      var couponminimum = Array();//最低消费金额
-      var couponcutdownarray = Array();
-      var couponlimitarray = Array();
-      var coupongoodsguid = Array();
-      couponsguid[0] = "";
-      couponsname[0] = '不使用优惠券';
-      couponcutdownarray[0] = 0;
-      couponlimitarray[0] = 0;
-      var index = 0;
-      for (var i in couponinfo) {
-        index++;
-        couponsguid[index] = couponinfo[i].id;
-        couponsname[index] = couponinfo[i].couponName;
-        coupondiscount[index] = couponinfo[i].discount;//折扣
-        couponminimum[index] = couponinfo[i].minimum;//最低消费金额
-        couponcutdownarray[index] = couponinfo[i].coupondiscount;
-        couponlimitarray[index] = couponinfo[i].LIMITAMOUNT;
-      }
+    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+      const { chargeMoney } = res
       this.setData({
-        couponindex: couponsguid,
-        couponarray: couponsname,
-        coupondiscount: coupondiscount,
-        couponminimum: couponminimum,
-        couponcutdownarray: couponcutdownarray,
-        couponlimitarray: couponlimitarray,
-        COUPONSTR: (couponinfo.length) + '张可用优惠券',
-        ORDERAMOUNT: this.data.goodsamount
-      });
+        balance: chargeMoney
+      })
+    })
+
+    http('coupon/list', {
+      sessionKey: sessionKey
+    }, 1).then(res => {
+      res = res.filter(item => {
+        return item.minimum * 1 <= totalPrice
+      })
+      res.unshift({
+        couponName: '不使用优惠券',
+        id: -1,
+        couponType: 1,
+        discount: 0
+      })
+      this.setData({
+        couponList: res
+      })
     })
   },
   submitOrderTap: function () {
     const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
-    const { goodsList } = this.data
+    const {
+      goodsList
+    } = this.data
     const param = JSON.stringify({
       sessionKey: sessionKey,
       orderGoodsList: goodsList
@@ -82,88 +82,101 @@ Page({
     })
   },
   pay(orderNo) {
-  const sessionKey = getApp().globalData.sessionkey
-  console.log(sessionKey)
-    const param = {
-      sessionKey,
-      orderNo,
-      type: 2
-    }
-    http('pay/payOrder', param, 1).then(res => {
-      const { body } = res
-      my.tradePay({
-        orderStr: body,
-        success: (result) => {
-          console.log(result)
-        },
-        fail: (err) => {
-          console.log(err)
+    const sessionKey = getApp().globalData.sessionkey
+    const { paymentindex, balance, totalPrice } = this.data
+    if (paymentindex * 1 === 1) { //余额支付
+      if (totalPrice <= balance) {
+        const param = {
+          orderNo: orderNo,
+          balance:totalPrice,
+          sessionKey: sessionKey
         }
-      });
-    })
-  },
-  bindPaymentChange: function (e) {
-    if (e.detail.value != '') {
-      this.setData({
-        paymentguid: this.data.paymentindex[e.detail.value],
-        pindex: e.detail.value,
-        PAYMENTSTR: this.data.paymentarray[e.detail.value]
-      });
+        http('pay/balancePay', param, 1).then(res => {
+          const {code} = res
+          if (code === 200) {
+            $Toast({
+              content: '支付成功',
+              type: 'success'
+            });
+            wx.navigateTo({
+              url: '../order/index',
+            })
+          } else {
+            $Toast({
+              content: '支付失败',
+              type: 'error'
+            });
+          }
+        })
+      }
+    } else {
+      const param = {
+        sessionKey,
+        orderNo,
+        type: 1,
+        balance: paymentindex * 1 === 1 ? balance : 0
+      }
+      http('pay/payOrder', param, 1).then(res => {
+        wx.requestPayment({
+          timeStamp: res.timeStamp,
+          nonceStr: res.nonceStr,
+          package: res.packageValue,
+          signType: res.signType,
+          paySign: res.paySign,
+          complete: res => {
+            const {
+              errMsg
+            } = res
+            if (errMsg === 'requestPayment:fail cancel') {
+              $Toast({
+                content: '支付失败',
+                type: 'error'
+              });
+            } else {
+              $Toast({
+                content: '支付成功',
+                type: 'success'
+              });
+              wx.navigateTo({
+                url: '../order/index',
+              })
+            }
+          }
+        })
+      })
     }
-
   },
   bindCouponChange: function (e) {
-    var that = this;
-    if (e.detail.value != '' || e.detail.value == 0) {
-      console.log(e.detail.value);
-      console.log(this.data.couponindex[e.detail.value]);
-      console.log(this.data.couponarray[e.detail.value]);
-      console.log(this.data.couponcutdownarray[e.detail.value]);
-      console.log(this.data.couponlimitarray[e.detail.value]);
-
-      //当前折扣
-      console.log(this.data.coupondiscount[e.detail.value]);
-      console.log(this.data.couponminimum[e.detail.value]);
-
-      var couponminimum = this.data.couponminimum[e.detail.value];//最低消费
-      var coupondiscount = this.data.coupondiscount[e.detail.value];//优惠折扣
-
-      console.log(that.data.goodsamount);
-      console.log(couponminimum);
-
-      if (parseFloat(that.data.goodsamount) >= parseFloat(couponminimum)) {
-
-        console.log('进的优惠');
-
-        //计算优惠券的优惠券金额
-        var couponcutdown = that.data.goodsamount - that.data.goodsamount * coupondiscount / 100
-      } else {
-        console.log('进的不减优惠');
-        var couponcutdown = 0;
-      }
-
-      //计算实际应该支付的价格
-      var orderamount = parseFloat(that.data.goodsamount) - parseFloat(couponcutdown);
-
-      this.setData({
-        couponguid: this.data.couponindex[e.detail.value],
-        cindex: e.detail.value,
-        COUPONSTR: this.data.couponarray[e.detail.value],
-        couponcutdown: couponcutdown,
-        couponlimit: this.data.couponlimitarray[e.detail.value],
-        ORDERAMOUNT: orderamount
-      });
-
-      if (e.detail.value == '0') {
-        this.setData({
-          usedcouponinfo: ''
-        });
-      } else {
-        this.setData({
-          usedcouponinfo: '优惠券优惠：- ￥' + parseFloat(that.data.couponcutdown).toFixed(2)
-        });
-      }
+    const {
+      value
+    } = e.detail
+    let {
+      totalPrice
+    } = this.data
+    this.setData({
+      couponIndex: value
+    })
+    const {
+      couponList
+    } = this.data
+    const coupon = couponList[value]
+    const {
+      couponType,
+      discount
+    } = coupon
+    if (couponType * 1 === 1) { //折扣券
+      totalPrice = totalPrice - totalPrice * discount * 0.01
+    } else { //抵用券
+      totalPrice = totalPrice - discount
     }
+    this.setData({
+      realPrice: totalPrice
+    })
+  },
+  bindPaymentChange(e) {
+    const { value } = e.detail
+    this.setData({
+      paymentindex: value
+    })
   }
-
 });
