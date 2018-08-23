@@ -48,7 +48,7 @@ Page({
       })
     })
 
-    http('coupon/list', {
+    http('coupon/all', {
       sessionKey: sessionKey
     }, 1).then(res => {
       res = res.filter(item => {
@@ -146,7 +146,7 @@ Page({
       })
     }
   },
-  bindCouponChange: function (e) {
+  bindCouponChange (e) {
     const {
       value
     } = e.detail

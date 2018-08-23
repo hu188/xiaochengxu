@@ -44,7 +44,7 @@
         </picker>
     </view>
     <view class="pro-pay">
-        <picker onChange="bindCouponChange" value="{{couponIndex}}" range="{{couponList}}" range-key='couponName'>
+        <picker bindchange="bindCouponChange" value="{{couponIndex}}" range="{{couponList}}" range-key='couponName'>
             <view class="picker">
                 <view>优惠券</view>
                 <view>{{couponList[couponIndex].couponName}}</view>
