@@ -42,5 +42,5 @@ module.exports = {
   }
 }
 function convertTime(time) {
-  return getDate(getDate().getFullYear() + '-' + (getDate().getMonth() + 1) + '-' + getDate().getDate() + ' ' + time).getTime()
+  return getDate(getDate().getFullYear() + '/' + (getDate().getMonth() + 1) + '/' + getDate().getDate() + ' ' + time).getTime()
 }

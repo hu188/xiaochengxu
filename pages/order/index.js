@@ -18,11 +18,11 @@ Page({
     systemInfo: {},
     currentOrderType: '',
     currentPageNum: 1,
-    selectIndex: 1
+    selectIndex: 3
   },
   onLoad: function (e) {
     wx.hideTabBar()
-    this.queryOrder(1);
+    this.queryOrder(3);
   },
   //根据订单状态获取我的订单
   queryOrder: function (status) {

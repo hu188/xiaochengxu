@@ -33,15 +33,19 @@ App({
             http('user/login', JSON.stringify(data), 1, 1).then(res => {
               const { sessionKey, userId } = res
               this.globalData.sessionkey = sessionKey
-              wx.getUserInfo({
-                success: (res) => {
-                  this.globalData.userInfo = res
-                },
-              });
+              this.globalData.userInfo = result
+              wx.showToast({
+                title: '登录成功！',
+              })
               wx.setStorage({
                 key: 'sessionKey', // 缓存数据的key
                 data: sessionKey // 要缓存的数据
               });
+              if (!userId) {
+                http('coupon/init', {sessionKey}, 1).then(res => {
+                 console.log(res)
+                })
+              }
             })
           }
         })

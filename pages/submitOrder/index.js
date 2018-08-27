@@ -23,7 +23,8 @@ Page({
     paymentindex: 0,
     couponIndex: 0,
     realPrice: 0,
-    balance: 0
+    balance: 0,
+    coupon:{}
   },
   onLoad: function (options) {
     const {
@@ -68,11 +69,13 @@ Page({
   submitOrderTap: function () {
     const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
     const {
-      goodsList
+      goodsList,
+      coupon
     } = this.data
     const param = JSON.stringify({
       sessionKey: sessionKey,
-      orderGoodsList: goodsList
+      orderGoodsList: goodsList,
+      coupon: coupon
     })
     http('order/create', param, 1, 1).then(res => {
       this.setData({
@@ -165,12 +168,13 @@ Page({
       discount
     } = coupon
     if (couponType * 1 === 1) { //折扣券
-      totalPrice = totalPrice - totalPrice * discount * 0.01
+      totalPrice -= totalPrice - totalPrice * discount * 0.01
     } else { //抵用券
       totalPrice = totalPrice - discount
     }
     this.setData({
-      realPrice: totalPrice
+      realPrice: totalPrice,
+      coupon: coupon
     })
   },
   bindPaymentChange(e) {
