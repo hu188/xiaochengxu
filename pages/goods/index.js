@@ -21,6 +21,14 @@ Page({
     this.setData({
       auth: app.globalData.auth
     })
+    const sessionKey = getApp().globalData.sessionkey
+    if (sessionKey) {
+      http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+        const { chargeMoney } = res
+        app.globalData.balance = chargeMoney
+      })
+    }
+
     wx.hideTabBar()
     const { type } = getApp().globalData
     if (!type.level) {
@@ -142,7 +150,7 @@ Page({
     if (coupons && coupons.id) {
       const { couponType } = coupons
       if (couponType * 1 === 5) {
-        goods['discount'] = goods.count*goods.retailPrice - goods.count * goods.retailPrice * coupons.discount * 0.01
+        goods['discount'] = goods.count * goods.retailPrice - goods.count * goods.retailPrice * coupons.discount * 0.01
       } else if (couponType * 1 === 6) {
         goods['discount'] = coupons.discount
       }
@@ -155,7 +163,7 @@ Page({
       return cur.count * cur.retailPrice - cur.discount + total
     }, 0)
     let num = selectGoods.reduce((total, cur) => {
-      return cur.count  + total
+      return cur.count + total
     }, 0)
     let disc = selectGoods.reduce((prev, cur) => {
       return cur.discount * 1 + prev
@@ -176,5 +184,15 @@ Page({
       })
       app.login()
     }
+  },
+  onShow (){
+   const {goodsList} = app.globalData
+   if (goodsList.length === 0) {
+     this.setData({
+       total:0,
+       discount: 0,
+       count: 0
+     })
+   }
   }
 })

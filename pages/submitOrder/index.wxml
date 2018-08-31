@@ -56,10 +56,10 @@
     </view>
     <view class="submit-btn">
         <view>实付款:                        
-            <label class="orderamount">￥{{price.price(realPrice-balance)}}</label>
+            <label class="orderamount">￥{{price.price(realPrice)}}</label>
         </view>
            <view hidden='{{balance === 0}}'>余额支付:                        
-            <label class="orderamount">￥{{price.price(balance)}}</label>
+            <label class="orderamount">￥{{balance >= totalPrice ? price.price(totalPrice) : price.price( balance)}}</label>
         </view>
         <view class="allbackground" catchtap="submitOrderTap">提交订单</view>
     </view>

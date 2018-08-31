@@ -41,6 +41,10 @@ Page({
         signType: signType,
         paySign: paySign,
         success: () =>{
+          http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+            const { chargeMoney } = res
+            app.globalData.balance = chargeMoney
+          })
           $Toast({
             content: '充值成功',
             type: 'success'

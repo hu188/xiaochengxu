@@ -8,8 +8,6 @@ const {
   $Toast
 } = require('../../components/base/index');
 Page({
-  ...common,
-  ...util,
   data: {
     buynum: 1,
     guid: '',
@@ -37,20 +35,23 @@ Page({
     goodsList.reduce((prev, cur) => {
       totalPrice += cur.retailPrice * cur.count - cur.discount
     }, 0)
-    this.setData({
-      totalPrice: totalPrice,
-      realPrice: totalPrice
-    })
-    const sessionKey = getApp().globalData.sessionkey
-    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-      const { chargeMoney } = res
-      this.setData({
-        balance: chargeMoney
-      })
-    })
-
+    let { balance} = app.globalData
+   if (totalPrice <= balance) {
+     this.setData({
+       totalPrice: totalPrice,
+       realPrice: 0,
+       balance: balance
+     })
+   } else {
+     this.setData({
+       totalPrice: totalPrice,
+       realPrice: totalPrice-balance,
+       balance: balance
+     })
+   }
+ 
     http('coupon/all', {
-      sessionKey: sessionKey
+      sessionKey: app.globalData.sessionKey
     }, 1).then(res => {
       res = res.filter(item => {
         return item.minimum * 1 <= totalPrice
@@ -84,6 +85,7 @@ Page({
       this.setData({
         order: res
       })
+      app.globalData.goodsList=[]
       this.pay(res.orderNo)
     })
   },
@@ -93,17 +95,16 @@ Page({
     if (totalPrice <= balance) {
       const param = {
         orderNo: orderNo,
-        balance: totalPrice,
         sessionKey: sessionKey
       }
       http('pay/balancePay', param, 1).then(res => {
-        const { code } = res
-        if (code === 200) {
+        const { id } = res
+        if (id) {
           $Toast({
             content: '支付成功',
             type: 'success'
           });
-          wx.navigateTo({
+          wx.switchTab({
             url: '../order/index',
           })
         } else {

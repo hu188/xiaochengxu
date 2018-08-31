@@ -24,12 +24,8 @@ Page({
   onLoad: function (e) {
     wx.hideTabBar()
     this.queryOrder(3);
-    const sessionKey = getApp().globalData.sessionkey
-    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-      const { chargeMoney } = res
-      this.setData({
-        balance: chargeMoney
-      })
+    this.setData({
+      balance: app.globalData.balance
     })
   },
   //根据订单状态获取我的订单
@@ -56,15 +52,19 @@ Page({
     })
   },
   pay(e) {
-    console.log(e)
     const sessionKey = getApp().globalData.sessionkey
-    const { orderno } = e.currentTarget.dataset
+    const { orderno, index } = e.currentTarget.dataset
+    const { orderlist} = this.data
+    const {balance} = app.globalData
+    const order = orderlist[index]
+    console.log(order)
+  //  if (order.payment)
     const param = {
       sessionKey,
       orderNo: orderno,
-      type: 1,
-      balance: 0
+      type: 1
     }
+    
     http('pay/payOrder', param, 1).then(res => {
       wx.requestPayment({
         timeStamp: res.timeStamp,

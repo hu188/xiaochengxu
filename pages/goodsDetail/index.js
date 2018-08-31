@@ -5,8 +5,6 @@ import util from '../../utils/util';
 import { http } from '../../utils/http'
 var WxParse = require('../../wxParse/wxParse.js');
 Page({
-  //...common,
-  ...util,
   data: {
     banners: [],
     autoplay: true,
@@ -33,7 +31,8 @@ Page({
     seckillid: '',
     isover: 0,
     discount: 0,
-    goods: {}
+    goods: {},
+    balance: 0
   },
   /*tab切换*/
   selected: function (e) {
@@ -63,6 +62,9 @@ Page({
     if (e.id != '' && e.id != undefined) {
       this.queryDetail(id)
     }
+    this.setData({
+      balance: app.globalData.balance
+    })
   },
   /**增加数量 */
   productCountPlus: function (e) {
@@ -76,9 +78,9 @@ Page({
     if (coupons && coupons.id) {
       const { couponType } = coupons
       if (couponType * 1 === 5) {
-        goods['discount'] = goods.count * goods.retailPrice * coupons.discount * 0.01
+        goods['discount'] =goods.count*goods.retailPrice -  goods.count * goods.retailPrice * coupons.discount * 0.01
       } else if (couponType * 1 === 6) {
-        goods['discount'] = coupons.discount
+        goods['discount'] = goods.count * goods.retailPrice-coupons.discount
       }
     } else {
       goods['discount'] = 0

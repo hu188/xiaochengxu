@@ -2,6 +2,9 @@ const app = getApp();
 import common from '../..//utils/common';
 import util from '../../utils/util';
 import { http } from '../../utils/http'
+const {
+  $Toast
+} = require('../../components/base/index');
 Page({
   data: {
     order: {},
@@ -17,11 +20,8 @@ Page({
         order:res
       })
     })
-    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-      const { chargeMoney } = res
-      this.setData({
-        balance: chargeMoney
-      })
+    this.setData({
+      balance: app.globalData.balance
     })
   },
   pay() {

@@ -37,6 +37,10 @@ App({
               wx.showToast({
                 title: '登录成功！',
               })
+              http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+                const { chargeMoney } = res
+                this.globalData.balance = chargeMoney
+              })
               wx.setStorage({
                 key: 'sessionKey', // 缓存数据的key
                 data: sessionKey // 要缓存的数据
@@ -109,6 +113,7 @@ App({
     goodsList: [], //结算时选中的商品,
     type: {},
     sessionkey: '',
-    auth: false
+    auth: false,
+    balance: 0
   },
 });

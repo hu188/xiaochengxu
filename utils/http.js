@@ -1,5 +1,5 @@
-// const BASE_URL = 'http://127.0.0.1:8080/api'
-const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
+const BASE_URL = 'http://127.0.0.1:8080/api'
+// const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
 /**
  ** url:请求地址
   ** data:请求参数
@@ -7,7 +7,7 @@ const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
    ** h:headers 1:json
  */
 module.exports =  {
-    http:function(url, data, m = 'GET', h) {
+    http:(url, data, m = 'GET', h)=> {
       wx.showLoading({
         title: '加载中...',
       })
@@ -25,7 +25,6 @@ module.exports =  {
                     } else if (status * 1 === 400) { //会话过期,重新登录
                         getApp().login()
                     } else {
-
                     }
                 },
                 fail: err=> {

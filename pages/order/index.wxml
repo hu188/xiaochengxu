@@ -26,7 +26,7 @@
 						<!-- <view class="orderleft bluefont" wx:if="{{item.status === 3}}">已取消</view> -->
 						<view class="orderleft bluefont" wx:if="{{item.status === 6}}">已完成</view>
 						<view class="orderright bluefont">
-							<view wx:if="{{item.status === 3}}" class="blueBtn" catchtap='pay' data-orderNo='{{item.orderNo}}'>去支付</view>
+							<view wx:if="{{item.status === 3}}" class="blueBtn" catchtap='pay' data-orderNo='{{item.orderNo}}' data-index='{{index}}'>去支付</view>
 							<view wx:else class="blueBtn" catchtap='view' data-orderNo='{{item.orderNo}}'>查看</view>
 						</view>
 					</view>
