@@ -5,8 +5,9 @@ import { http } from '../../utils/http'
 Page({
   data: {
     order: {},
-    paymentarray:['微信支付','余额支付'],
-    paymentindex:0
+    paymentarray:['微信支付'],
+    paymentindex:0,
+    balance: 0
   },
   onLoad: function (options) {
     const { orderNo } = options
@@ -16,6 +17,12 @@ Page({
         order:res
       })
     })
+    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+      const { chargeMoney } = res
+      this.setData({
+        balance: chargeMoney
+      })
+    })
   },
   pay() {
     const sessionKey = getApp().globalData.sessionkey
@@ -23,20 +30,34 @@ Page({
     const param = {
       sessionKey,
       orderNo,
-      type: 1
+      type: 1,
+      balance: 0
     }
     http('pay/payOrder', param, 1).then(res => {
       wx.requestPayment({
-        timeStamp: '',
-        nonceStr: '',
-        package: '',
-        signType: '',
-        paySign: '',
-        success:res=>{
-
-        },
-        fail: err =>{
-          
+        timeStamp: res.timeStamp,
+        nonceStr: res.nonceStr,
+        package: res.packageValue,
+        signType: res.signType,
+        paySign: res.paySign,
+        complete: res => {
+          const {
+            errMsg
+          } = res
+          if (errMsg === 'requestPayment:fail cancel') {
+            $Toast({
+              content: '支付失败',
+              type: 'error'
+            });
+          } else {
+            $Toast({
+              content: '支付成功',
+              type: 'success'
+            });
+            wx.navigateTo({
+              url: '../order/index',
+            })
+          }
         }
       })
     })

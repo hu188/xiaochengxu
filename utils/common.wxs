@@ -1,5 +1,6 @@
 module.exports =  {
-    price: function(p) {
+    price: function(p, p1 = 0) {
+      p = Math.abs(p)+Math.abs(p1)
       if (p< 0) {
         return '-'+Number(Math.abs(p)).toFixed(2)
       } else {

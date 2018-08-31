@@ -13,7 +13,7 @@ Page({
   data: {
     buynum: 1,
     guid: '',
-    paymentarray: ['微信支付','余额支付'],
+    paymentarray: ['微信支付'],
     couponguid: '',
     cindex: 0,
     goodsList: [],
@@ -24,7 +24,7 @@ Page({
     couponIndex: 0,
     realPrice: 0,
     balance: 0,
-    coupon:{}
+    coupon: {}
   },
   onLoad: function (options) {
     const {
@@ -70,12 +70,15 @@ Page({
     const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
     const {
       goodsList,
-      coupon
+      coupon,
+      balance
     } = this.data
+
     const param = JSON.stringify({
       sessionKey: sessionKey,
       orderGoodsList: goodsList,
-      coupon: coupon
+      coupon: coupon,
+      balance: balance
     })
     http('order/create', param, 1, 1).then(res => {
       this.setData({
@@ -87,37 +90,35 @@ Page({
   pay(orderNo) {
     const sessionKey = getApp().globalData.sessionkey
     const { paymentindex, balance, totalPrice } = this.data
-    if (paymentindex * 1 === 1) { //余额支付
-      if (totalPrice <= balance) {
-        const param = {
-          orderNo: orderNo,
-          balance:totalPrice,
-          sessionKey: sessionKey
-        }
-        http('pay/balancePay', param, 1).then(res => {
-          const {code} = res
-          if (code === 200) {
-            $Toast({
-              content: '支付成功',
-              type: 'success'
-            });
-            wx.navigateTo({
-              url: '../order/index',
-            })
-          } else {
-            $Toast({
-              content: '支付失败',
-              type: 'error'
-            });
-          }
-        })
+    if (totalPrice <= balance) {
+      const param = {
+        orderNo: orderNo,
+        balance: totalPrice,
+        sessionKey: sessionKey
       }
+      http('pay/balancePay', param, 1).then(res => {
+        const { code } = res
+        if (code === 200) {
+          $Toast({
+            content: '支付成功',
+            type: 'success'
+          });
+          wx.navigateTo({
+            url: '../order/index',
+          })
+        } else {
+          $Toast({
+            content: '支付失败',
+            type: 'error'
+          });
+        }
+      })
     } else {
       const param = {
         sessionKey,
         orderNo,
         type: 1,
-        balance: paymentindex * 1 === 1 ? balance : 0
+        balance: balance
       }
       http('pay/payOrder', param, 1).then(res => {
         wx.requestPayment({
@@ -149,7 +150,7 @@ Page({
       })
     }
   },
-  bindCouponChange (e) {
+  bindCouponChange(e) {
     const {
       value
     } = e.detail

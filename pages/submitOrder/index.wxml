@@ -36,7 +36,7 @@
         </view>
     </view>
     <view class="pro-pay">
-        <picker bindchange="bindPaymentChange" value="{{paymentindex}}" range="{{paymentarray}}">
+        <picker  value="{{paymentindex}}" range="{{paymentarray}}">
             <view class="picker">
                 <view>支付方式</view>
                 <view>{{paymentarray[paymentindex]}}</view>
@@ -56,7 +56,10 @@
     </view>
     <view class="submit-btn">
         <view>实付款:                        
-            <label class="orderamount">￥{{price.price(realPrice)}}</label>
+            <label class="orderamount">￥{{price.price(realPrice-balance)}}</label>
+        </view>
+           <view hidden='{{balance === 0}}'>余额支付:                        
+            <label class="orderamount">￥{{price.price(balance)}}</label>
         </view>
         <view class="allbackground" catchtap="submitOrderTap">提交订单</view>
     </view>

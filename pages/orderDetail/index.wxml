@@ -60,10 +60,14 @@
   <view class="price-list">
     <view class="orderamount">商品金额：￥{{order.totalprice}}</view>
   </view>
-  <view class="submit-btn" wx:if="{{order.status === 1}}">
+    <view class="price-list" hidden='{{balance === 0}}'>
+    <view class="orderamount">余额支付：￥{{balance}}</view>
+  </view>
+  <view class="submit-btn" wx:if="{{order.status === 3}}">
     <view>实付款:
-      <label class="orderamount">￥{{price.price(order.payment)}}</label>
+      <label class="orderamount">￥{{price.price(order.payment, order.balance - balance)}}</label>
     </view>
-    <view class="allbackground" wx:if="{{order.status === 1}}" catchtap="pay">去支付</view>
+    <view class="allbackground" wx:if="{{order.status*1 === 3}}" catchtap="pay">去支付</view>
   </view>
 </view>
+<i-toast id="toast" />

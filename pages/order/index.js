@@ -18,11 +18,19 @@ Page({
     systemInfo: {},
     currentOrderType: '',
     currentPageNum: 1,
-    selectIndex: 3
+    selectIndex: 3,
+    balance: 0
   },
   onLoad: function (e) {
     wx.hideTabBar()
     this.queryOrder(3);
+    const sessionKey = getApp().globalData.sessionkey
+    http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+      const { chargeMoney } = res
+      this.setData({
+        balance: chargeMoney
+      })
+    })
   },
   //根据订单状态获取我的订单
   queryOrder: function (status) {
@@ -54,7 +62,8 @@ Page({
     const param = {
       sessionKey,
       orderNo: orderno,
-      type: 1
+      type: 1,
+      balance: 0
     }
     http('pay/payOrder', param, 1).then(res => {
       wx.requestPayment({
