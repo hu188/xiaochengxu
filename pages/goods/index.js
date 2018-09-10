@@ -186,12 +186,18 @@ Page({
     }
   },
   onShow (){
-   const {goodsList} = app.globalData
+    let { goodsList} = app.globalData
+    let { list} = this.data
    if (goodsList.length === 0) {
+     list.map(item => {
+       item.count = 0
+       return item
+     })
      this.setData({
        total:0,
        discount: 0,
-       count: 0
+       count: 0,
+       list: list
      })
    }
   }

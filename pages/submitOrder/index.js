@@ -51,17 +51,19 @@ Page({
    }
  
     http('coupon/all', {
-      sessionKey: app.globalData.sessionKey
+      sessionKey: getApp().globalData.sessionkey
     }, 1).then(res => {
       res = res.filter(item => {
         return item.minimum * 1 <= totalPrice
       })
-      res.unshift({
-        couponName: '不使用优惠券',
-        id: -1,
-        couponType: 1,
-        discount: 0
-      })
+      if (res.length > 0) {
+        res.unshift({
+          couponName: '不使用优惠券',
+          id: -1,
+          couponType: 1,
+          discount: 0
+        })
+      }
       this.setData({
         couponList: res
       })
@@ -100,10 +102,15 @@ Page({
       http('pay/balancePay', param, 1).then(res => {
         const { id } = res
         if (id) {
+          app.globalData.goodsList = []
           $Toast({
             content: '支付成功',
             type: 'success'
           });
+          http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+            const { chargeMoney } = res
+            app.globalData.balance = chargeMoney
+          })
           wx.switchTab({
             url: '../order/index',
           })
@@ -142,8 +149,12 @@ Page({
                 content: '支付成功',
                 type: 'success'
               });
-              wx.navigateTo({
-                url: '../order/index',
+              http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+                const { chargeMoney } = res
+                app.globalData.balance = chargeMoney
+                wx.navigateTo({
+                  url: '../order/index',
+                })
               })
             }
           }
@@ -161,23 +172,32 @@ Page({
     this.setData({
       couponIndex: value
     })
-    const {
-      couponList
-    } = this.data
-    const coupon = couponList[value]
-    const {
-      couponType,
-      discount
-    } = coupon
-    if (couponType * 1 === 1) { //折扣券
-      totalPrice -= totalPrice - totalPrice * discount * 0.01
-    } else { //抵用券
-      totalPrice = totalPrice - discount
+    let { balance } = app.globalData
+totalPrice -= balance
+    if (value*1 > 0) {
+      const {
+        couponList
+      } = this.data
+      const coupon = couponList[value]
+      const {
+        couponType,
+        discount
+      } = coupon
+      if (couponType * 1 === 1) { //折扣券
+        totalPrice -= totalPrice - totalPrice * discount * 0.01
+      } else { //抵用券
+        totalPrice = totalPrice - discount
+      }
+      this.setData({
+        realPrice: totalPrice,
+        coupon: coupon
+      })
+    } else {
+      this.setData({
+        realPrice: totalPrice,
+        coupon: {}
+      })
     }
-    this.setData({
-      realPrice: totalPrice,
-      coupon: coupon
-    })
   },
   bindPaymentChange(e) {
     const { value } = e.detail

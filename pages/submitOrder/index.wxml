@@ -43,7 +43,7 @@
             </view>
         </picker>
     </view>
-    <view class="pro-pay">
+    <view class="pro-pay" wx:if='{{couponList.length > 0}}'>
         <picker bindchange="bindCouponChange" value="{{couponIndex}}" range="{{couponList}}" range-key='couponName'>
             <view class="picker">
                 <view>优惠券</view>

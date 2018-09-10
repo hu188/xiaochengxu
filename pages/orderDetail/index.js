@@ -50,12 +50,13 @@ Page({
               type: 'error'
             });
           } else {
-            $Toast({
-              content: '支付成功',
-              type: 'success'
-            });
-            wx.navigateTo({
-              url: '../order/index',
+            http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+              const { chargeMoney } = res
+              const { selectIndex } = this.data
+              app.globalData.balance = chargeMoney
+              wx.navigateTo({
+                url: '../order/index',
+              })
             })
           }
         }
