@@ -1,4 +1,4 @@
-// const BASE_URL = 'http://127.0.0.1:8080/api'
+// const BASE_URL = 'https://419735c7.ngrok.io/api'
 const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
 /**
  ** url:请求地址

@@ -69,7 +69,8 @@ Page({
       })
     })
   },
-  submitOrderTap: function () {
+  submitOrderTap (e) {
+    const { formId} = e.detail
     const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
     const {
       goodsList,
@@ -88,10 +89,10 @@ Page({
         order: res
       })
       app.globalData.goodsList=[]
-      this.pay(res.orderNo)
+      this.pay(res.orderNo, formId, res)
     })
   },
-  pay(orderNo) {
+  pay(orderNo, formId, res) {
     const sessionKey = getApp().globalData.sessionkey
     const { paymentindex, balance, totalPrice } = this.data
     if (totalPrice <= balance) {
@@ -107,10 +108,8 @@ Page({
             content: '支付成功',
             type: 'success'
           });
-          http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-            const { chargeMoney } = res
-            app.globalData.balance = chargeMoney
-          })
+          getApp().sendTemplate(formId, res)
+          getApp().queryBanlance()
           wx.switchTab({
             url: '../order/index',
           })
@@ -149,12 +148,10 @@ Page({
                 content: '支付成功',
                 type: 'success'
               });
-              http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-                const { chargeMoney } = res
-                app.globalData.balance = chargeMoney
-                wx.navigateTo({
-                  url: '../order/index',
-                })
+              getApp().sendTemplate(formId, res)
+              getApp().queryBanlance()
+              wx.navigateTo({
+                url: '../order/index',
               })
             }
           }
@@ -203,6 +200,12 @@ totalPrice -= balance
     const { value } = e.detail
     this.setData({
       paymentindex: value
+    })
+  },
+  onShow () {
+    getApp().queryBanlance()
+    this.setData({
+      balance: app.globalData.balance
     })
   }
 });

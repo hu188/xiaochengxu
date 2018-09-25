@@ -31,6 +31,8 @@ ul,ul li,ol li,p,a,div,span,h1,h2,h3,h4,h5,h6,input,button,textarea,th,td,label,
 .allbackground {
   background: #5bb6ff;
   color: #fff;
+  font-size: 14px;
+  height: 100%;
 }
 
 .allcolor {

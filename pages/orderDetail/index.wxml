@@ -67,7 +67,9 @@
     <view>实付款:
       <label class="orderamount">￥{{ order.payment - balance > 0 ? price.price(order.payment-balance) : '0.00'}}</label>
     </view>
-    <view class="allbackground" wx:if="{{order.status*1 === 3}}" catchtap="pay">去支付</view>
+    <form report-submit='true' bindsubmit='pay' wx:if="{{order.status*1 === 3}}">
+    <button class="allbackground"  form-type='submit'>去支付</button>
+    </form>
   </view>
 </view>
 <i-toast id="toast" />

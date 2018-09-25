@@ -24,9 +24,6 @@ Page({
   onLoad: function (e) {
     wx.hideTabBar()
     this.queryOrder(3);
-    this.setData({
-      balance: app.globalData.balance
-    })
   },
   //根据订单状态获取我的订单
   queryOrder: function (status) {
@@ -52,20 +49,44 @@ Page({
     })
   },
   pay(e) {
+    const { formId} = e.detail
     const sessionKey = getApp().globalData.sessionkey
     const { orderno, index } = e.currentTarget.dataset
     const { orderlist} = this.data
-    const {balance} = app.globalData
     const order = orderlist[index]
-    console.log(order)
-  //  if (order.payment)
-    const param = {
+    const {balance} = getApp().globalData
+    const { payment} = order
+    if (Number(payment) <= Number(balance)){
+      const param = {
+        orderNo: orderno,
+        sessionKey: sessionKey
+      }
+      http('pay/balancePay', param, 1).then(res => {
+        const { id } = res
+        if (id) {
+          app.globalData.goodsList = []
+          $Toast({
+            content: '支付成功',
+            type: 'success'
+          });
+          getApp().sendTemplate(formId, order)
+          getApp().queryBanlance()
+          this.queryOrder(3);
+        } else {
+          $Toast({
+            content: '支付失败',
+            type: 'error'
+          });
+        }
+      })
+    return
+    } 
+    const params = {
       sessionKey,
       orderNo: orderno,
       type: 1
     }
-    
-    http('pay/payOrder', param, 1).then(res => {
+    http('pay/payOrder', params, 1).then(res => {
       wx.requestPayment({
         timeStamp: res.timeStamp,
         nonceStr: res.nonceStr,
@@ -86,15 +107,18 @@ Page({
               content: '支付成功',
               type: 'success'
             });
-            http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-              const { chargeMoney } = res
-              const { selectIndex} = this.data
-              app.globalData.balance = chargeMoney
-              this.queryOrder(selectIndex)
-            })
+            getApp().sendTemplate(formId, order)
+            getApp().queryBanlance()
+            this.queryOrder(3);
           }
         }
       })
+    })
+  },
+  onShow (){
+    getApp().queryBanlance()
+    this.setData({
+      balance: app.globalData.balance
     })
   }
 });

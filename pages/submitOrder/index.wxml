@@ -28,7 +28,7 @@
     <view class="produts-list" wx:for="{{goodsList}}" wx:for-index="idx" wx:for-item="item" wx:key='{{index}}'>
         <view class="pro-details">
             <view>{{item.commodityName}}</view>
-            <view>已优惠:{{item.discount}}</view>
+            <view>已优惠:{{price.price(item.discount)}}</view>
             <view>
                 <text>￥{{price.price(item.retailPrice)}}</text>
                 <text class="goodsNum">x{{item.count}}</text>
@@ -61,7 +61,11 @@
            <view hidden='{{balance === 0}}'>余额支付:                        
             <label class="orderamount">￥{{balance >= totalPrice ? price.price(totalPrice) : price.price( balance)}}</label>
         </view>
-        <view class="allbackground" catchtap="submitOrderTap">提交订单</view>
+        <form report-submit='true' bindsubmit='submitOrderTap'>
+        <view class='allbackground'>
+            <button  form-type='submit' class='submit'>提交订单</button>
+        </view>
+        </form>
     </view>
 </view>
 <i-toast id="toast" />
