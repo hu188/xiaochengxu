@@ -11,11 +11,11 @@ Component({
     discount: {
       type: Number,
       value: 0
-    }
+    },
   },
   methods: {
     onSubmit(ev) {
       this.triggerEvent('onSubmit')
     },
-  },
+  }
 })

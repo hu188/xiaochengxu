@@ -44,6 +44,7 @@ Component({
   },
   methods: {
     handleChangeStep(e, type) {
+      
       const { dataset = {} } = e.currentTarget;
       const { disabled } = dataset;
       const { step } = this.data;
@@ -98,4 +99,5 @@ Component({
       this.triggerEvent('change', data);
     }
   }
+  
 });

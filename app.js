@@ -93,7 +93,7 @@ App({
   queryType() {
     return new Promise((resolve, reject) => {
       http('store/type', { "appId": "wx978041ffe305d125" }).then(res => {
-        const { levelTypeId, type } = res
+        const { levelTypeId, type } = res;
         this.globalData.type = { level: levelTypeId, type }
         resolve({ level: levelTypeId, type })
       })
@@ -107,7 +107,8 @@ App({
     appsecret: '',
     isGetedAuth: 0,//是否获取到授权
     isCanceledAuth: 0,//是否取消了授权
-    hostname: 'https://www.tianrenyun.com.cn',
+    //hostname: 'https://www.tianrenyun.com.cn',
+    hostname: 'https://qsq.mynatapp.cc/api',
     imgPath: 'https://www.tianrenyun.com/qsqFile/filelib/imagelib/dealerlib/',
     isNeedLogin: 0,//0为不需要登录，1为需要手机号验证码登录
     goodsList: [], //结算时选中的商品,

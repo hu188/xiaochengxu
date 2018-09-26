@@ -18,12 +18,12 @@ Page({
     systemInfo: {},
     currentOrderType: '',
     currentPageNum: 1,
-    selectIndex: 3,
+    selectIndex: 4,
     balance: 0
   },
   onLoad: function (e) {
     wx.hideTabBar()
-    this.queryOrder(3);
+    this.queryOrder(4);
     this.setData({
       balance: app.globalData.balance
     })

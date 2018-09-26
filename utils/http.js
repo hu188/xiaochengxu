@@ -1,5 +1,7 @@
 // const BASE_URL = 'http://127.0.0.1:8080/api'
-const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
+//const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
+const BASE_URL = 'https://qsq.mynatapp.cc/api'
+//const BASE_URL = 'https://qsq.mynatapp.cc/qsq/service/external'
 /**
  ** url:请求地址
   ** data:请求参数

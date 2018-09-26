@@ -15,14 +15,14 @@
       <view wx:if="{{list.length>0}}" class="sub-lists">
         <view wx:for="{{list}}" wx:key='index' style='display:flex;flex-direction:column; border-bottom: 2rpx solid rgba(125, 125, 125, .2);margin-bottom: 10rpx;'>
           <view class="colsview">
-            <image src="{{utils.convertImagePath(item.id)}}" catchtap="queryDetail" data-id="{{item.id}}"></image>
-            <view catchtap="queryDetail" data-id="{{item.id}}" class="goods">
+            <image src="{{utils.convertImagePath(item.id)}}"  data-id="{{item.id}}"></image><!--catchtap="queryDetail"-->
+            <view  data-id="{{item.id}}" class="goods"><!--catchtap="queryDetail"-->
               <text class="coltex">{{item.commodityName}}</text>
               <view class="coltex price">￥{{price.price(item.retailPrice)}}  <text style='text-decoration:line-through;color:#000;margin-left:5px;'>￥{{price.price(item.costPrice)}}  </text></view>
               <!-- <text class="discount" wx:if='{{item.discount && item.discount>0}}'>已优惠:{{price.price(item.discount)}}</text> -->
             </view>
             <view class="counter">
-              <input-number value="{{ item.count || 0}}" min="0" max="100" step="1" bindchange="changeNumber" data-index='{{index}}'  data-item='{{utils.getCoupon(item)}}'/>
+              <input-number value="{{item.count ||0}}" min="0" max="100" step="1" bindchange="changeNumber" data-index='{{index}}'  data-item='{{utils.getCoupon(item)}}' />
             </view>
           </view>
           <text class="discount">{{utils.getCoupon(item).couponName}}</text>

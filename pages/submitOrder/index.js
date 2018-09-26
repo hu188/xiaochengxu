@@ -107,6 +107,7 @@ Page({
             content: '支付成功',
             type: 'success'
           });
+          wx.clearStorageSync();
           http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
             const { chargeMoney } = res
             app.globalData.balance = chargeMoney
@@ -149,13 +150,15 @@ Page({
                 content: '支付成功',
                 type: 'success'
               });
+              wx.clearStorageSync();
               http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
                 const { chargeMoney } = res
                 app.globalData.balance = chargeMoney
-                wx.navigateTo({
+                wx.switchTab({
                   url: '../order/index',
                 })
               })
+            
             }
           }
         })

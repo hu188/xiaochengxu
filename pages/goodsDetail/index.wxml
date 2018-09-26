@@ -45,7 +45,7 @@
   <!--tab切换效果开始-->
   <view class="nav bc_white">
     <view class="{{selected?'red':'default'}}" catchtap="selected">商品详情</view>
-    <view class="{{selected1?'red':'default'}}" catchtap="selected1" hidden>规格参数</view>
+    <view class="{{selected1?'red':'default'}}" catchtap="selected1" >规格参数</view>
     <view class="{{selected2?'red':'default'}}" catchtap="selected2" hidden>购物须知</view>
   </view>
   <view class="product_details {{selected?'show':'hidden'}}">
@@ -74,6 +74,10 @@
       <view class="pd-dsc1 clearfix">
         <view class="v-dt">规格</view>
         <view class="title">杯</view>
+      </view>
+       <view class="pd-dsc1 clearfix">
+        <view class="v-dt">保质期</view>
+        <view class="title">{{goods.strQualityPeriod}}</view>
       </view>
       <view class="free-title small-free-title"></view>
       <view class="space"></view>

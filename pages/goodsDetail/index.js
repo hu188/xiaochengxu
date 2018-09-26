@@ -57,10 +57,15 @@ Page({
     })
   },
 
-  onLoad: function (e) {
-    const { id } = e
+  onLoad: function (e) { 
+    const { id,num } = e
     if (e.id != '' && e.id != undefined) {
       this.queryDetail(id)
+    }
+    if(num>0){
+     this.setData({
+       buynum:num
+     })
     }
     this.setData({
       balance: app.globalData.balance

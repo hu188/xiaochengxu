@@ -10,6 +10,7 @@ Page({
   data: {
     types: [],
     list: [],
+    glist:[],
     selectType: -1,
     count: 0,
     total: 0,
@@ -19,7 +20,7 @@ Page({
   },
   onLoad(e) {
     this.setData({
-      auth: app.globalData.auth
+      auth: app.globalData.auth,
     })
     const sessionKey = getApp().globalData.sessionkey
     if (sessionKey) {
@@ -28,7 +29,7 @@ Page({
         app.globalData.balance = chargeMoney
       })
     }
-
+    wx.clearStorageSync()
     wx.hideTabBar()
     const { type } = getApp().globalData
     if (!type.level) {
@@ -66,9 +67,19 @@ Page({
       level: type.level
     }
     http('goods/list', param, 1).then(res => {
-      this.setData({
+    const hcList = wx.getStorageSync('list' + id);
+      if (hcList.length>0){
+        this.setData({
+          list: hcList
+        })
+      }else{
+        this.setData({
+          list: res
+        })
+      }
+      /*this.setData({
         list: res
-      })
+      })*/
     })
   },
   //搜索功能
@@ -110,15 +121,16 @@ Page({
   },
 
   //点击三级分类跳转商品列表
-  queryDetail: function (event) {
+/*  queryDetail: function (event) {
     const { dataset } = event.currentTarget
     const { id } = dataset
     if (id != '') {
       wx.navigateTo({
-        url: '../goodsDetail/index?id=' + id
+        url: '../goodsDetail/index?id=' + id 
       });
     }
-  },
+  },*/
+  
   submitHandler() {
     const { total } = this.data
     if (total > 0) {
@@ -133,10 +145,10 @@ Page({
       });
     }
   },
-  changeNumber({ detail, target }) {
+  changeNumber({ detail, target}) {
     const { item } = target.dataset
-    let { list, count, total, discount } = this.data
-    const { value, type } = detail
+    let { list, count, total, discount,glist} = this.data
+    const { value, type } = detail 
     const { index } = target.dataset
     let goods = list[index]
     if (type === 'plus') {
@@ -146,6 +158,11 @@ Page({
     }
     goods['count'] = value
     goods['coupons'] = item
+    const s = glist.filter(item => item.id != goods.id);
+    s.push(goods);
+    this.setData({
+      glist: s
+    });
     const { coupons } = goods
     if (coupons && coupons.id) {
       const { couponType } = coupons
@@ -158,7 +175,8 @@ Page({
       goods['discount'] = 0
     }
     list[index] = goods
-    const selectGoods = list.filter(item => item.count && item.count > 0)
+    const selectGoods = s.filter(item => item.count && item.count > 0) 
+
     let totalPrice = selectGoods.reduce((total, cur) => {
       return cur.count * cur.retailPrice - cur.discount + total
     }, 0)
@@ -168,6 +186,7 @@ Page({
     let disc = selectGoods.reduce((prev, cur) => {
       return cur.discount * 1 + prev
     }, 0)
+
     this.setData({
       list,
       count: num,
@@ -175,6 +194,10 @@ Page({
       discount: disc,
       selectGoods: selectGoods
     })
+    wx.setStorage({
+      key: 'list' + list[0].commodityType, // 缓存数据的key
+      data: list // 要缓存的数据
+    });
   },
   getUserInfoFun(e) {
     const { errMsg } = e.detail

@@ -53,15 +53,16 @@
     <picker>
       <view class="picker">
         <view>商品优惠券</view>
-        <view>暂无商品优惠券信息</view>
+        <view wx:if='{{order.coupon===null}}'>暂无商品优惠券信息</view>
+        <view wx:else>{{order.coupon}}</view>
       </view>
     </picker>
-  </view>
+    </view>
   <view class="price-list">
     <view class="orderamount">商品金额：￥{{order.totalprice}}</view>
   </view>
     <view class="price-list" hidden='{{balance === 0}}'>
-    <view class="orderamount">余额支付：￥{{balance}}</view>
+    <view class="orderamount">余额：￥{{balance}}</view>
   </view>
   <view class="submit-btn" wx:if="{{order.status === 3}}">
     <view>实付款:
