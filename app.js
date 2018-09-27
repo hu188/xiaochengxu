@@ -99,6 +99,32 @@ App({
       })
     })
   },
+  queryBanlance () {
+    const { sessionkey} = this.globalData
+    http('recharge/queryBalance', { sessionKey: sessionkey }, 1).then(res => {
+      const { chargeMoney } = res
+      this.globalData.balance = chargeMoney
+    })
+  },
+  sendTemplate(formId, order) {
+    const { orderItemList } = order
+    console.log(orderItemList)
+    const sessionKey = getApp().globalData.sessionkey
+    const params = JSON.stringify({
+      sessionKey: sessionKey,
+      templateId: 'W1oIoiPcifWe68y8jigaOgRkVmMFj8Z1BkF0sIRYN0g',
+      keyword1: order.orderNo,
+      keyword2: Number(order.payment).toFixed(2),
+      keyword3: order.createTime,
+      keyword4: orderItemList[0].goodsName,
+      miniProgramUrl: 'pages/order/index',
+      formId: formId,
+      remark: '',
+      first: ''
+    })
+    http('template/send', params, 1, 1).then(res => {
+    })
+  },
   globalData: {
     userInfo: null,
     user_id: '',//支付宝userid

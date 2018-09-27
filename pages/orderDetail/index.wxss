@@ -235,7 +235,14 @@
 .commonprice{
     color: red;
 }
+form{
+  height: 100%;
+}
 .allbackground {
     background: #5bb6ff;
     color: #fff;
+    outline: none;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
 }

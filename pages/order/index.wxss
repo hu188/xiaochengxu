@@ -133,7 +133,7 @@ view.orderright {
 }
 
 
-view.blueBtn {
+.blueBtn {
     background-color: #0289d1;
     color: #fff;
     width: 75px;

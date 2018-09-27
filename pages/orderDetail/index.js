@@ -20,20 +20,47 @@ Page({
         order:res
       })
     })
-    this.setData({
-      balance: app.globalData.balance
-    })
   },
-  pay() {
+  pay(e) {
     const sessionKey = getApp().globalData.sessionkey
-    const {orderNo} = this.data.order
-    const param = {
+    const { formId } = e.detail
+    const { orderNo, payment} = this.data.order
+    const { balance} = this.data
+    if (Number(payment) <= Number(balance)) {
+      const param = {
+        orderNo: orderNo,
+        sessionKey: sessionKey
+      }
+      http('pay/balancePay', param, 1).then(res => {
+        const { id } = res
+        if (id) {
+          app.globalData.goodsList = []
+          $Toast({
+            content: '支付成功',
+            type: 'success'
+          });
+          getApp().sendTemplate(formId, this.data.order)
+          getApp().queryBanlance()
+          wx.navigateTo({
+            url: '../order/index',
+          })
+        } else {
+          $Toast({
+            content: '支付失败',
+            type: 'error'
+          });
+        }
+      })
+      return
+    } 
+
+    const params = {
       sessionKey,
       orderNo,
       type: 1,
       balance: 0
     }
-    http('pay/payOrder', param, 1).then(res => {
+    http('pay/payOrder', params, 1).then(res => {
       wx.requestPayment({
         timeStamp: res.timeStamp,
         nonceStr: res.nonceStr,
@@ -50,13 +77,10 @@ Page({
               type: 'error'
             });
           } else {
-            http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-              const { chargeMoney } = res
-              const { selectIndex } = this.data
-              app.globalData.balance = chargeMoney
-              wx.navigateTo({
-                url: '../order/index',
-              })
+            getApp().sendTemplate(formId, this.data.order)
+            getApp().queryBanlance()
+            wx.navigateTo({
+              url: '../order/index',
             })
           }
         }
@@ -67,6 +91,12 @@ Page({
     const { value } = e.detail
     this.setData({
       paymentindex: value
+    })
+  },
+  onShow() {
+    getApp().queryBanlance()
+    this.setData({
+      balance: app.globalData.balance
     })
   }
 });
