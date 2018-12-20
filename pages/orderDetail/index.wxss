@@ -130,7 +130,7 @@
 }
 .goodsNum {
     margin-left: 20rpx;
-    color: #999;
+    font-size: 30rpx;
 }
 .pro-pay{
     width: 100%;
@@ -235,14 +235,20 @@
 .commonprice{
     color: red;
 }
-form{
-  height: 100%;
-}
 .allbackground {
     background: #5bb6ff;
     color: #fff;
-    outline: none;
-    border-radius: 0;
-    display: flex;
-    align-items: center;
+     width: 45px;
+}
+.blueBtn {
+  margin-top: 10px;
+    background-color: #0289d1;
+    color: #fff;
+    width: 75px;
+    height: 35px;
+    line-height: 30px; 
+    text-align: center;
+    border-radius: 5px;
+    font-size: 24rpx;
+    margin-right: 10rpx;
 }

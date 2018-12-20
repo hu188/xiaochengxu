@@ -39,7 +39,7 @@ Page({
    */
   onLoad: function (e) {
     const sessionKey = getApp().globalData.sessionkey
-    http('coupon/list', { sessionKey: sessionKey }, 1).then(res => {
+    http('qsq/service/external/coupon/list', { sessionKey: sessionKey }, 1).then(res => {
    console.log(res)
       this.setData({
         couponList: res

@@ -1,0 +1,9 @@
+<!--pages/quickMark/index.wxml-->
+<image src='../images/scancode-avtive.png' class='p' bindtap="click"></image>
+<text class='txt'>请先扫码进入小程序</text>
+<view class="mask" catchtouchmove="preventTouchMove" wx:if="{{hidden}}"></view>
+<view class="modalDlg" wx:if="{{hidden}}">
+      <text class="modalText">需授权后，进入小程序！</text>
+      <button class="modalButton" size='default' open-type="getUserInfo" bindgetuserinfo="getUserInfo" >确定         </button>
+</view>
+

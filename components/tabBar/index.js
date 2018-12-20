@@ -31,10 +31,38 @@ Component({
         wx.switchTab({
           url: '/pages/mycenter/index',
         })
-      } else {
+      } else if (key === 'homepage'){
         wx.switchTab({
           url: '/pages/goods/index',
         })
+      }else{
+        wx.scanCode({
+          success: (res) => {
+            const { result } = res
+            if (result.length > 0) {
+              const str = result.split(':')[2]
+              if (str === undefined) {
+                $Toast({
+                  content: '扫码失败',
+                  type: 'error'
+                });
+              } else {
+                if (str.indexOf('//') === -1) {
+                  wx.switchTab({
+                    url: '../goods/index'
+                  })
+                } else {
+                  const id = str.split('=')[1].replace('//', '')
+                  wx.navigateTo({
+                    url: `../goodsDetail/index?id=${id}`
+                  })
+                }
+              }
+            }
+          },
+          fail: (res) => {
+          }
+        });
       }
       
     }

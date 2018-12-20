@@ -12,8 +12,8 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.3.0",
-	"appid": "wxda92424d9380bab2",
-	"projectname": "%E5%A4%A9%E4%BB%BB%E5%94%AE%E8%B4%A7%E6%9C%BA",
+	"appid": "wx8be7c1ea3988551e",
+	"projectname": "%E6%8D%B7%E4%BE%BF%E5%88%A9",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
@@ -38,8 +38,8 @@
 				{
 					"id": 0,
 					"name": "sdf",
-					"pathName": "pages/mycenter/index",
-					"query": "id=123"
+					"pathName": "pages/goods/index",
+					"query": "deviceId=502887849"
 				}
 			]
 		}

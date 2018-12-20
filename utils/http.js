@@ -1,11 +1,12 @@
 
 // const BASE_URL = 'http://127.0.0.1:8080/api'
-//const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
-const BASE_URL = 'https://qsq.mynatapp.cc/api'
-//onst BASE_URL = 'https://qsq.mynatapp.cc/qsq/service/external'
-
+//const BASE_URL = 'https://www.tianrenyun.com'
+//const BASE_URL = 'https://qsq.mynatapp.cc/api'
+var BASE_URL = 'https://qsq.mynatapp.cc'
+//const BASE_URL = 'https://qsq.mynatapp.cc/qtg/service/external'
 // const BASE_URL = 'https://419735c7.ngrok.io/api'
 //const BASE_URL = 'https://www.tianrenyun.com.cn/vendor/api'
+
 
 /**
  ** url:请求地址
@@ -19,10 +20,14 @@ module.exports =  {
         title: '加载中...',
       })
         return new Promise((resolve, reject) => {
+          if (getApp().globalData.urlType == 1) {
+             BASE_URL = 'https://www.tianrenyun.com'
+          }
             wx.request({
                 url: `${BASE_URL}/${url}`, // 目标服务器url
                 data: data,
                 method: m ? 'POST' : 'GET',
+              // header: { 'content-type': 'application/json'},
                 header: { 'content-type': h ? 'application/json' : 'application/x-www-form-urlencoded' },
                 success: (res) => {
                     wx.hideLoading();
@@ -37,8 +42,13 @@ module.exports =  {
                 fail: err=> {
                   console.log(err)
                     wx.hideLoading();
+                },
+                complete: res => {
+                  console.log()
                 }
             });
+         
         })
+    
     }
 }

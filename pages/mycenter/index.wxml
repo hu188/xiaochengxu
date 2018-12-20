@@ -4,6 +4,7 @@
     <view class="userinfo">
       <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}"></image>
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+      <image wx:if="{{isVip==1}}" class="vip" src="../images/vip.jpg"></image>
       <view a:if="{{isshowlogin==1}}">
         <navigator class="logininfo" url='{{loginurl}}'>{{showtext}}</navigator>
       </view>
@@ -12,7 +13,9 @@
         <text class="exit" a:if="{{showtext}}" onTap='userexit'>{{logouttxt}}</text>
       </view>
     </view>
+    
   </view>
+  
   <view class="orderinfo">
     <!--修改后的我的订单 start -->
     <view class="order-list-all">
@@ -59,6 +62,22 @@
           <view class="divclear5"></view>
         </view>
       </navigator>
+
+<navigator url="../rechargeVip/index">
+        <view class="div_div1 orderList">
+          <view class="tab_div">
+            <view class="ico1">
+              <image src="../images/vip.jpg" class="vip"></image>
+              <view class="tab_span">我的会员</view>
+            </view>
+            <view class="ico2">
+              <image src="http://mshop.yiyao365.cn/theme/default/images/wap/icon-05.png"></image>
+            </view>
+          </view>
+          <view class="divclear5"></view>
+        </view>
+      </navigator>
+
       <button  open-type='concat' class='concat'>
         <view class="div_div1 orderList">
           <view class="tab_div">
@@ -79,4 +98,5 @@
     <view>天任提供技术支持</view>
   </view>
 </view>
+
 <i-tab current='mine'></i-tab>

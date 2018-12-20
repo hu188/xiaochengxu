@@ -15,7 +15,7 @@ Page({
     deviceList: [],
     address: {},
     auth: false,
-    point:{}
+    point:{},
   },
   onLoad(options) {
     this.setData({
@@ -30,10 +30,12 @@ Page({
   getLocation: function (map) {
     var that = this;
     wx.getLocation({
+
+      
       type: 'wgs84',
       altitude: true,
       success: res => {
-        const { latitude, longitude } = res
+        const { latitude, longitude } = res //纬度经度
         map.reverseGeocoder({
           location: { latitude, longitude }, coord_type: 1, success: res => {
             const { result } = res
@@ -57,7 +59,7 @@ Page({
 
   //获取附近设备
   showNearbyShebei: function () {
-    http('device/list', app.globalData.type, 1).then(res => {
+    http('qsq/service/external/device/list', app.globalData.type, 1).then(res => {
       let markers = []
       let points = []
       res.forEach(item => {

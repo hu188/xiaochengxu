@@ -1,9 +1,8 @@
 const app = getApp();
 import common from '../../utils/common';
 import util from '../../utils/util';
-import {
-  http
-} from '../../utils/http'
+import { http } from '../../utils/http'
+
 const {
   $Toast
 } = require('../../components/base/index');
@@ -11,96 +10,160 @@ Page({
   data: {
     buynum: 1,
     guid: '',
-    paymentarray: ['微信支付'],
+    paymentarray: ['微信支付','余额支付'],
     couponguid: '',
     cindex: 0,
     goodsList: [],
     order: {},
+    orderNo:'',
     totalPrice: 0,
     couponList: [],
     paymentindex: 0,
     couponIndex: 0,
     realPrice: 0,
     balance: 0,
-    coupon: {}
+    coupon: {},
+    goodId:[],//货道id,
+    goodsName:[],
+    deviceName: '',
+    isVip: 0,
+    isFirstBuy: 0,
   },
   onLoad: function (options) {
     const {
       goodsList
     } = app.globalData
     this.setData({
-      goodsList
+      goodsList,
+      deviceName: app.globalData.deviceName
     })
     let totalPrice = 0
-    goodsList.reduce((prev, cur) => {
-      totalPrice += cur.retailPrice * cur.count - cur.discount
-    }, 0)
-    let { balance} = app.globalData
-   if (totalPrice <= balance) {
-     this.setData({
-       totalPrice: totalPrice,
-       realPrice: 0,
-       balance: balance
-     })
-   } else {
-     this.setData({
-       totalPrice: totalPrice,
-       realPrice: totalPrice-balance,
-       balance: balance
-     })
-   }
- 
-    http('coupon/all', {
-      sessionKey: getApp().globalData.sessionkey
-    }, 1).then(res => {
-      res = res.filter(item => {
-        return item.minimum * 1 <= totalPrice
-      })
-      if (res.length > 0) {
-        res.unshift({
-          couponName: '不使用优惠券',
-          id: -1,
-          couponType: 1,
-          discount: 0
-        })
+    goodsList.reduce((prev, cur, currentIndex) => {
+      if (cur.retailPrice * cur.count - cur.discount>0){
+        if (app.globalData.isVip == 1 && app.globalData.isFirstBuy == 1) {
+          totalPrice += cur.costPrice * cur.count - cur.discount
+        }else{
+          totalPrice += cur.retailPrice * cur.count - cur.discount
+        }
+      }else{
+        totalPrice +=0.01
       }
-      this.setData({
-        couponList: res
-      })
+      
+    }, 0)
+    this.setData({
+      totalPrice: totalPrice,
+      realPrice: totalPrice,
+      balance:app.globalData.balance,
+      isVip: app.globalData.isVip,
+      isFirstBuy:app.globalData.isFirstBuy
     })
+  //   let { balance } = app.globalData
+  //  if (totalPrice <= balance) {
+  //    this.setData({
+  //      totalPrice: totalPrice,
+  //      realPrice: 0,
+  //      balance: balance
+  //    })
+  //  } else {
+  //    this.setData({
+  //      totalPrice: totalPrice,
+  //      realPrice: totalPrice-balance,
+  //      balance: balance
+  //    })
+  //  }
+ 
+    // http('qsq/service/external/coupon/all', {
+    //   sessionKey: getApp().globalData.sessionkey
+    // }, 1).then(res => {
+    //   res = res.filter(item => {
+    //     return item.minimum * 1 <= totalPrice
+    //   })
+    //   if (res.length > 0) {
+    //     res.unshift({
+    //       couponName: '不使用优惠券',
+    //       id: -1,
+    //       couponType: 1,
+    //       discount: 0
+    //     })
+    //   }
+    //   this.setData({
+    //     couponList: res
+    //   })
+    // })
   },
-  submitOrderTap (e) {
-    const { formId} = e.detail
+  submitOrderTap: function () {
     const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
     const {
       goodsList,
       coupon,
-      balance
+      balance,
+      paymentindex      
     } = this.data
-
-    const param = JSON.stringify({
-      sessionKey: sessionKey,
-      orderGoodsList: goodsList,
-      coupon: coupon,
-      balance: balance
-    })
-    http('order/create', param, 1, 1).then(res => {
-      this.setData({
-        order: res
+   
+    //查询设备状态（在线、离线、设备忙）
+    http('qsq/service/external/device/queryStatus', { sign: app.globalData.sign, id: app.globalData.id }, 1).then(res => {
+      if (paymentindex==1){
+        this.data.payType=8
+      }else{
+        this.data.payType =7
+      }
+    //无返回设备状态正常
+     if(res==''){
+        //创建预付订单
+        if(app.globalData.tp==0){//单货道机器
+          if (this.data.goodsList[0].goodId) {
+            this.data.goodId = this.data.goodsList[0].goodId
+          } else {
+            this.data.goodId = this.data.goodsList[0].id
+          }
+        
+          http('qsq/service/external/order/saveOrderInfo', {
+            deviceId: app.globalData.deviceId,
+            userId: app.globalData.userId,
+            goodId: this.data.goodId,
+            goodName: this.data.goodsList[0].commodityName,
+            money: this.data.realPrice, payType: this.data.payType,
+            num: this.data.goodsList.length,
+            nickname: app.globalData.nickname
+            , isVip: this.data.isVip, isFirstBuy: this.data.isFirstBuy,
+          }, 1).then(res => {
+            this.setData({
+              order: res
+            })
+            this.pay(res.orderNo)
+          })
+        } else {//多货道机器
+          const { goodsList} = this.data
+          http('qsq/service/external/order/saveOrderInfo', { goodsList: JSON.stringify(goodsList), deviceId: app.globalData.deviceId, userId: app.globalData.userId, payType: this.data.payType, nickname: app.globalData.nickname,isVip:this.data.isVip,isFirstBuy:this.data.isFirstBuy,
+            tp: app.globalData.tp}, 1).then(res => {
+            this.setData({
+              order: res
+            })
+              this.pay(res.extendMsg)
+          })
+        }
+      
+       //显示设备错误状态信息（离线、设备忙）
+     }else{
+       $Toast({
+         content: res,
+         type: 'error'
+       });
+     }
       })
-      app.globalData.goodsList=[]
-      this.pay(res.orderNo, formId, res)
-    })
+    
   },
-  pay(orderNo, formId, res) {
+  pay(orderNo) {
     const sessionKey = getApp().globalData.sessionkey
     const { paymentindex, balance, totalPrice } = this.data
-    if (totalPrice <= balance) {
+    if (paymentindex==1){//余额支付
+    if (totalPrice <= balance) {//余额大于支付金额
       const param = {
         orderNo: orderNo,
         sessionKey: sessionKey
       }
-      http('pay/balancePay', param, 1).then(res => {
+      //余额支付
+      http('qsq/service/external/pay/balancePay', param, 1).then(res => {
         const { id } = res
         if (id) {
           app.globalData.goodsList = []
@@ -108,16 +171,25 @@ Page({
             content: '支付成功',
             type: 'success'
           });
-          wx.clearStorageSync();
-          http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+          app.globalData.isFirstBuy = 0
+          http('qsq/service/external/recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
+            //qsq/service/external/user/updateUser
             const { chargeMoney } = res
-            app.globalData.balance = chargeMoney
+            this.setData({
+              balance: chargeMoney / 100
+            })
+            app.globalData.balance = chargeMoney / 100
           })
-         // getApp().sendTemplate(formId, res)
-          //getApp().queryBanlance()
+
+          //发送报文
+          http('qtg/service/external/chat/send', { deviceId: app.globalData.deviceId,
+            userId: app.globalData.userId, orderNo: orderNo, money: this.data.totalPrice * 100,send:0},1).then(res=>{
+          })
+          wx.clearStorageSync();
           wx.switchTab({
             url: '../order/index',
           })
+
         } else {
           $Toast({
             content: '支付失败',
@@ -125,19 +197,27 @@ Page({
           });
         }
       })
-    } else {
+    } else{//余额小于支付金额
+      $Toast({
+        content: '余额不足',
+        type: 'error'
+      });
+    }
+    }else {
       const param = {
-        sessionKey,
+        userId:app.globalData.userId,
         orderNo,
         type: 1,
-        balance: balance
+        tp: app.globalData.tp,
+        appid:app.globalData.id
       }
-      http('pay/payOrder', param, 1).then(res => {
+      //微信支付
+      http('qsq/service/external/pay/getWeChatPayInfo', param, 1).then(res => {
         wx.requestPayment({
-          timeStamp: res.timeStamp,
+          timeStamp: res.timeStamp + '',
           nonceStr: res.nonceStr,
-          package: res.packageValue,
-          signType: res.signType,
+          package: 'prepay_id=' + res.prepay_id,
+          signType: 'MD5',
           paySign: res.paySign,
           complete: res => {
             const {
@@ -153,20 +233,15 @@ Page({
                 content: '支付成功',
                 type: 'success'
               });
-
               wx.clearStorageSync();
-              http('recharge/queryBalance', { sessionKey: sessionKey }, 1).then(res => {
-                const { chargeMoney } = res
-              app.globalData.balance = chargeMoney
-             // getApp().sendTemplate(formId, res)
-             // getApp().queryBanlance()
-                wx.switchTab({
+              app.globalData.goodsList = []
+              wx.switchTab({
                 url: '../order/index',
-              })
               })
             }
           }
-        })
+        });
+        
       })
     }
   },
@@ -211,12 +286,6 @@ totalPrice -= balance
     const { value } = e.detail
     this.setData({
       paymentindex: value
-    })
-  },
-  onShow () {
-    getApp().queryBanlance()
-    this.setData({
-      balance: app.globalData.balance
     })
   }
 });

@@ -14,7 +14,7 @@
 }
 
 .renmb {
-    font-size: 60rpx;
+    font-size: 40rpx;
     font-weight: bold;
     text-align: center;
 }

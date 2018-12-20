@@ -169,7 +169,7 @@ Page({
   // },
   /**查询商品详情 */
   queryDetail(id) {
-    http('goods/queryGoodsDetail', { "goodsId": id }, 1).then(res => {
+    http('qsq/service/external/goods/queryGoodsDetail', { "goodsId": id }, 1).then(res => {
       let { banners } = this.data
       const path = getApp().globalData.imgPath + res.id + '.jpg'
       banners.push(path)

@@ -3,5 +3,6 @@
    "usingComponents": {
     "i-toast": "../../components/toast/index",
     "i-tab": "../../components/tabbar/index"
-  }
+  },
+"enablePullDownRefresh": true
 }

@@ -1,7 +1,7 @@
 <view class="coupon">
   <view wx:if="{{couponList.length<=0}}" class="no-branchw">商家还没有发布优惠券哦~~
   </view>
-  <view class="coupon_body_eveycoupon" wx:for="{{couponList}}" wx:for-index="idx" wx:for-item="itemName" wx:index='{{index}}'>
+  <view class="coupon_body_eveycoupon" wx:for="{{couponList}}" wx:for-index="idx" wx:for-item="itemName" wx:index='{{index}}' wx:key='{{clist}}'>
     <view class="coupon_li">
       <view class="coupon_moneyandinfo" data-couponname="{{itemName.couponName}}" data-starttime="{{itemName.startTime}}" data-endtime="{{itemName.endTime}}" data-price="{{itemName.minimum}}" data-useofrange="{{goodsinfo[itemName.GUID].NAME}}" data-detailedurl="{{goodsinfo[itemName.GUID].GOODSGUID}}">
         <view class="coupon_price">

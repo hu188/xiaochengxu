@@ -92,6 +92,12 @@
   border-radius: 50%;
   margin: 0 20rpx;
 }
+.userinfo .vip {
+  width: 30px;
+  height: 20px;
+  display: block;
+  margin: 0 20rpx;
+}
 
 .userinfo .userinfo-nickname {
   height: 30px;

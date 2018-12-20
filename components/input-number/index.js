@@ -12,7 +12,7 @@ function addNum(num1, num2) {
   catch (e) {
     sq2 = 0;
   }
-  m = Math.pow(10, Math.max(sq1, sq2));
+  m = Math.pow(10, Math.max(sq1, sq2));//Math.pow(底数,几次方)
   return (Math.round(num1 * m) + Math.round(num2 * m)) / m;
 }
 
@@ -49,7 +49,7 @@ Component({
       const { disabled } = dataset;
       const { step } = this.data;
       let { value } = this.data;
-      if (disabled) return null;
+      //if (disabled) return null;
       if (type === 'minus' && value >this.data.min) {
         value = addNum(value, -step);
       } else if (type === 'plus' && value < this.data.max) {
@@ -95,7 +95,6 @@ Component({
         value: value
       };
       if (type) data.type = type;
-
       this.triggerEvent('change', data);
     }
   }

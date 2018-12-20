@@ -8,11 +8,11 @@ Page({
   },
   onLoad: function () {
     const sessionKey = getApp().globalData.sessionkey
-    http('coupon/all', { sessionKey: sessionKey }, 1).then(res => {
-      this.setData({
-        couponList: res
-      })
-    })
+    // http('qsq/service/external/coupon/all', { sessionKey: sessionKey }, 1).then(res => {
+    //   this.setData({
+    //     couponList: res
+    //   })
+    // })
   },
   onShow(e) {
 

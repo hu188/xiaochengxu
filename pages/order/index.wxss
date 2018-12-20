@@ -9,7 +9,15 @@
 .container .item{
    width: 100%;
 }
-
+.list {
+  overflow:auto;
+  margin:auto;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+}
 text {
     margin: 5px 0px;
 }
@@ -128,12 +136,12 @@ view.orderleft {
 }
 
 view.orderright {
-    width: 50%;
+    width: 100%;
     text-align:right;
 }
 
 
-.blueBtn {
+view.blueBtn {
     background-color: #0289d1;
     color: #fff;
     width: 75px;
