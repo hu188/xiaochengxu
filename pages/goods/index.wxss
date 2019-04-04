@@ -149,6 +149,7 @@
 }
 .sub-left{
     width: 23%;
+    height: 90%;
 }
 .sub-left .ul-left view{
     height: 60px;
@@ -222,6 +223,16 @@
 }
 .sub-lists {
     padding-bottom:10px;
+}
+.hdsp{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.hdcss{
+  font-size: 16px;
+  margin-right: 10px;
+  color: #fd7601;
 }
 .coltex{
     text-align: left;

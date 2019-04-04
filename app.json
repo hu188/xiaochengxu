@@ -1,5 +1,6 @@
 {
   "pages": [
+   
     "pages/goods/index",
     "pages/rechargeVip/index",
     "pages/home/index",

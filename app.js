@@ -114,6 +114,7 @@ App({
     urlType:'',
     url:'',
     tp: '',//0单货单，1多货道
-    nickname:''
+    nickname:'',
+    sessionId:''
   },
 });

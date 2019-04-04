@@ -31,10 +31,13 @@ module.exports =  {
                 header: { 'content-type': h ? 'application/json' : 'application/x-www-form-urlencoded' },
                 success: (res) => {
                     wx.hideLoading();
-                    const { status, data } = res.data
+                    const { status, data,code } = res.data
                     if (status * 1 === 200) {
                         resolve(data)
-                    } else if (status * 1 === 400) { //会话过期,重新登录
+                    } else if (code * 1 === 0) {
+                      resolve(data)
+                    } 
+                     else if (status * 1 === 400) { //会话过期,重新登录
                         getApp().login()
                     } else {
                     }

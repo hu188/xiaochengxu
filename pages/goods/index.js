@@ -2,6 +2,7 @@
 const app = getApp();
 import common from '../../utils/common';
 import { http } from '../../utils/http';
+import { encode } from '../../utils/encode';
 const {
   $Toast
 } = require('../../components/base/index');
@@ -15,13 +16,13 @@ Page({
     types: [],
     deviceId:"",
     classify:'',
-    s:'',
+    s: '', //序号
     list: [],
     glist:[],
     //selectType: -1,
     selectType: "第一层",
     goodsType:[],//
-    goodRoads: ["第一层", "第二层", "第三层", "第四层", "第五层", "第六层","第七层","第八层"],
+    goodRoads: ["第一层", "第二层", "第三层", "第四层", "第五层", "第六层", "第七层", "第八层", "第九层", "第十层"],
     count: 0,
     total: 0,
     selectGoods: [],
@@ -58,10 +59,10 @@ Page({
         }
       }
     });
-    
+    //type为1正式版，type为2本地测试 tp为1多货道，tp为0单货道
     // BmcKLAeVhAcVgcf BHAchmBlLBG BpffIBGIBHeBPBK BkAcIiBIAcBlLBHBPk
-    var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=BpffIBGIBHeBPBK&type=2&appid=6&tp=1'
-   //var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=&type=1&appid=4&tp=' 
+    var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=BmcKLBfjBhdBHAa&type=2&appid=6&tp=1'
+   //var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=&type=1&appid=9&tp=' 
    
     if (options.q) {
       url = decodeURIComponent(options.q);
@@ -83,13 +84,16 @@ Page({
               "id": app.globalData.id,
               ...result
             }
-            http('qsq/service/external/user/login', JSON.stringify(data), 1, 1).then(res => {
+             http('qsq/service/external/user/login', JSON.stringify(data), 1, 1).then(res => {
+          //  http('qsq/miniService/miniProComm/weChatCommon/commonLogin', JSON.stringify(data), 1, 1).then(res => {
+          
               const { isvip, id, firstbuy, sessionKey, chargeMoney, nickname } = res
+              app.globalData.sessionId = res.sessionId
               app.globalData.userId = id
               app.globalData.isVip = isvip
               app.globalData.sessionkey = sessionKey
               app.globalData.balance = chargeMoney/100
-              app.globalData.nickname = nickname
+                app.globalData.nickname = nickname
               const { levelTypeId, type } = res;
               app.globalData.type = { level: levelTypeId, type }
                  _self.setData({
@@ -216,21 +220,15 @@ Page({
           arr[i].picture = goodsJson[i][this.data.j];//j:图片
           arr[i].num = goodsJson[i][this.data.n];//n:数量
           arr[i].valid=goodsJson[i][this.data.i];//是否有效 非0有效 
-          // if (this.data.isVip == 1 && this.data.isFirstBuy == 1) {
-          //   arr[i].retailPrice = goodsJson[i].costPrice ? goodsJson[i].costPrice : goodsJson[i][this.data.p];//购买价
-          //   arr[i].costPrice = goodsJson[i][this.data.p];//非购买价 p:价格
-          // }else{
-          //   arr[i].retailPrice = goodsJson[i][this.data.p];//购买价
-          //   arr[i].costPrice = goodsJson[i].costPrice ? goodsJson[i].costPrice : goodsJson[i][this.data.p];//非购买价
-          // }
+ 
           arr[i].retailPrice = goodsJson[i][this.data.p];//原价
           arr[i].costPrice = goodsJson[i].costPrice ? goodsJson[i].costPrice : goodsJson[i][this.data.p]//会员价
           if (!goodsJson[i][this.data.j]!=null){
             var d = Math.floor(Math.random() * 10000)
             arr[i].id = d;
           }
-          
-          if(goodsJson[i][this.data.s] < 100 || goodsJson[i][this.data.s] >=1000){
+          // 改
+          if(goodsJson[i][this.data.s] < 100 || goodsJson[i][this.data.s] >=1100){
               this.setData({
                 s:'',
               })
@@ -254,8 +252,12 @@ Page({
               arr[i].typeName = "第六层";
             } else if (numb && numb > 700 && numb < 800) {
               arr[i].typeName = "第七层";
-            }else{
+            } else if (numb && numb > 800 && numb < 900) {
               arr[i].typeName = "第八层";
+            } else if (numb && numb > 900 && numb < 1000) {
+              arr[i].typeName = "第九层";
+            }else{
+              arr[i].typeName = "第十层";
             }
           }
          
@@ -263,7 +265,12 @@ Page({
         }
         //存在序号，分层显示
         if(this.data.s){
-          var end = xuhao.sort()[xuhao.length - 1].substr(0, 1);
+          var end=""
+         if(xuhao.sort()[0].length>3){
+           end=10
+         }else{
+           end = xuhao.sort()[xuhao.length - 1].substr(0, 1);
+         }
           this.setData({
             goodsType: this.data.goodRoads.slice(0, end)
           })
@@ -321,6 +328,12 @@ Page({
   noGoods() {
     $Toast({
       content: '货存不足！请选择其他商品！',
+      type: 'error'
+    });
+  },
+  fault() {
+    $Toast({
+      content: '货到故障！请选择其他商品！',
       type: 'error'
     });
   },
