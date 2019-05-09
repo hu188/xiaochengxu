@@ -36,6 +36,7 @@ Page({
    
   },
   onLoad(options) {
+    wx.hideTabBar()
     //判断是否授权
     var _this = this;
     wx.getSetting({
@@ -60,9 +61,9 @@ Page({
       }
     });
     //type为1正式版，type为2本地测试 tp为1多货道，tp为0单货道
-    // BmcKLAeVhAcVgcf BHAchmBlLBG BpffIBGIBHeBPBK BkAcIiBIAcBlLBHBPk
-    var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=BmcKLBfjBhdBHAa&type=2&appid=6&tp=1'
-   //var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=&type=1&appid=9&tp=' 
+    //BmcKLAeVhAeVhAc
+    var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=BmcKLAeVhAeVhAc&type=2&appid=6&tp=0'
+   //var url = 'https://www.tianrenyun.com/qsq/paomian/?sign=&type=1&appid=4&tp=' 
    
     if (options.q) {
       url = decodeURIComponent(options.q);
@@ -174,6 +175,7 @@ Page({
         })
         app.globalData.deviceName = res[0].deviceName
         app.globalData.deviceId = res[0].deviceId
+        app.globalData.classify = res[0].classify
         this.queryGoods(this.data.deviceId, this.data.selectType)
       })
     }

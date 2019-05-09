@@ -105,6 +105,7 @@ App({
     auth: false,
     balance: 0,
     deviceId:'',
+    classify:'',//设备类型
     userId:'',
     isVip: '',
     isFirstBuy:0,

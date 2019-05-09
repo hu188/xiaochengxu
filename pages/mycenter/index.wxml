@@ -21,7 +21,8 @@
     <view class="order-list-all">
       <view class="myorder">
         <view class="myordertext">
-          <image class="iconfirst" src="../images/order-icon.png"></image>
+        <i-icon type="activity" size="24" color="#8B3626" style='margin-right:10px;'/>
+          <!-- <image class="iconfirst" src="../images/order-icon.png"></image> -->
           <view>我的订单</view>
         </view>
         <navigator class="myordertext" url="../order/index" open-type='switchTab'>
@@ -36,7 +37,8 @@
         <view class="div_div1 orderList">
           <view class="tab_div">
             <view class="ico1">
-              <image src="../images/yhq.png"></image>
+              <!-- <image src="../images/yhq.png"></image> -->
+                <i-icon type="coupons" size="24" color="#FFAF25" style='margin-right:10px;'/>
               <view class="tab_span">我的优惠券</view>
             </view>
             <view class="ico2">
@@ -52,7 +54,8 @@
         <view class="div_div1 orderList">
           <view class="tab_div">
             <view class="ico1">
-              <image src="../images/honst-icon.png"></image>
+              <!-- <image src="../images/honst-icon.png"></image> -->
+               <i-icon type="financial_fill" size="24" color="#3CB371" style='margin-right:10px;'/>
               <view class="tab_span">我的余额</view>
             </view>
             <view class="ico2">
@@ -67,7 +70,8 @@
         <view class="div_div1 orderList">
           <view class="tab_div">
             <view class="ico1">
-              <image src="../images/vip.jpg" class="vip"></image>
+              <!-- <image src="../images/vip.jpg" class="vip"></image> -->
+              <i-icon type="addressbook" size="24" color="#EE2C2C" style='margin-right:10px;'/>
               <view class="tab_span">我的会员</view>
             </view>
             <view class="ico2">
@@ -82,7 +86,8 @@
         <view class="div_div1 orderList">
           <view class="tab_div">
             <view class="ico1">
-              <image src="../images/xun1-active.png"></image>
+              <!-- <image src="../images/xun1-active.png"></image> -->
+               <i-icon type="customerservice" size="24" color="#63B8FF" style='margin-right:10px;'/>
               <view class="tab_span">客服</view>
             </view>
             <view class="ico2">

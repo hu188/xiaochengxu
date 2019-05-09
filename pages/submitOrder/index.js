@@ -2,6 +2,7 @@ const app = getApp();
 import common from '../../utils/common';
 import util from '../../utils/util';
 import { http } from '../../utils/http'
+const { $Message } = require('../../components/base/index');
 
 const {
   $Toast
@@ -28,6 +29,7 @@ Page({
     deviceName: '',
     isVip: 0,
     isFirstBuy: 0,
+    allGoodList:[],
   },
   onLoad: function (options) {
     const {
@@ -92,7 +94,45 @@ Page({
     // })
   },
   submitOrderTap: function () {
-    const sessionKey = getApp().globalData.sessionkey //用户sessionkey，暂用我的做测试
+   
+    ////////////////////
+    if (app.globalData.classify.indexOf("FF") != -1) {
+    //根据设备id查找商品
+    http('qsq/service/external/goods/queryGoods', { deviceId: app.globalData.deviceId }, 1).then(res => {
+     
+        //FF类型设备
+        var goodsRoadColumn = res[0].goodsRoadColumn;
+        var goods = res[0].goodsRoad1;
+        var goodsRoadColumns = "[" + goodsRoadColumn + "]";
+        var goodsRoadColumnsJson = JSON.parse(goodsRoadColumns)
+
+        for (var i = 0; i < goodsRoadColumnsJson.length; i++) {
+          this.data[goodsRoadColumnsJson[i].value] = goodsRoadColumnsJson[i].columnName;
+        }
+        var arr = [];
+        var goodsJson = JSON.parse(goods);
+        for (var i = 0; i < goodsJson.length; i++) {
+          arr.push(goodsJson[i]);
+          arr[i].commodityName = goodsJson[i][this.data.t];//t:名称
+          arr[i].picture = goodsJson[i][this.data.j];//j:图片
+          arr[i].num = goodsJson[i][this.data.n];//n:数量
+          arr[i].valid = goodsJson[i][this.data.i];//是否有效 非0有效 
+          arr[i].goodId = i + 1;
+          if (!goodsJson[i][this.data.j] != null) {
+            var d = Math.floor(Math.random() * 10000)
+            arr[i].id = d;
+          }
+        }
+        this.setData({
+          allGoodList: arr
+        })
+      
+    })
+    }
+    ///////////////
+
+
+    const sessionKey = getApp().globalData.sessionkey //用户sessionkey
     const {
       goodsList,
       coupon,
@@ -116,31 +156,62 @@ Page({
           } else {
             this.data.goodId = this.data.goodsList[0].id
           }
+          //////
+          //验证商品库存是否充足
+          var cgood = this.data.allGoodList[this.data.goodId-1]
+          if(cgood.num>0){
+            http('qsq/service/external/order/saveOrderInfo', {
+              deviceId: app.globalData.deviceId,
+              userId: app.globalData.userId,
+              goodId: this.data.goodId,
+              goodName: this.data.goodsList[0].commodityName,
+              money: this.data.realPrice, payType: this.data.payType,
+              num: this.data.goodsList.length,
+              nickname: app.globalData.nickname
+              , isVip: this.data.isVip, isFirstBuy: this.data.isFirstBuy,
+            }, 1).then(res => {
+              this.setData({
+                order: res
+              })
+              this.pay(res.orderNo)
+            })
+          }else{
+            $Message({
+              content: '库存不足，请重新扫码',
+              type: 'error'
+            });
+          }
+          //////
         
-          http('qsq/service/external/order/saveOrderInfo', {
-            deviceId: app.globalData.deviceId,
-            userId: app.globalData.userId,
-            goodId: this.data.goodId,
-            goodName: this.data.goodsList[0].commodityName,
-            money: this.data.realPrice, payType: this.data.payType,
-            num: this.data.goodsList.length,
-            nickname: app.globalData.nickname
-            , isVip: this.data.isVip, isFirstBuy: this.data.isFirstBuy,
-          }, 1).then(res => {
-            this.setData({
-              order: res
-            })
-            this.pay(res.orderNo)
-          })
         } else {//多货道机器
-          const { goodsList} = this.data
-          http('qsq/service/external/order/saveOrderInfo', { goodsList: JSON.stringify(goodsList), deviceId: app.globalData.deviceId, userId: app.globalData.userId, payType: this.data.payType, nickname: app.globalData.nickname,isVip:this.data.isVip,isFirstBuy:this.data.isFirstBuy,
-            tp: app.globalData.tp}, 1).then(res => {
-            this.setData({
-              order: res
-            })
+          const { goodsList,allGoodList} = this.data
+           //验证商品库存是否充足
+          var ts='';
+          for (var j = 0; j < goodsList.length;j++){
+            const gl = allGoodList.filter(item => item.goodId == goodsList[j].goodId)
+            if (gl[0].num - goodsList[j].count<0){
+              ts += gl[0].commodityName+","
+            }
+          }
+          ts=ts.substring(0,ts.length-1)
+          
+          if(ts==''){
+            http('qsq/service/external/order/saveOrderInfo', {
+              goodsList: JSON.stringify(goodsList), deviceId: app.globalData.deviceId, userId: app.globalData.userId, payType: this.data.payType, nickname: app.globalData.nickname, isVip: this.data.isVip, isFirstBuy: this.data.isFirstBuy,
+              tp: app.globalData.tp
+            }, 1).then(res => {
+              this.setData({
+                order: res
+              })
               this.pay(res.extendMsg)
-          })
+            })
+          }else{
+            $Message({
+              content: ts + '库存不足，请重新扫码',
+              type: 'error'
+            });
+          }
+       
         }
       
        //显示设备错误状态信息（离线、设备忙）
@@ -158,12 +229,20 @@ Page({
     const { paymentindex, balance, totalPrice } = this.data
     if (paymentindex==1){//余额支付
     if (totalPrice <= balance) {//余额大于支付金额
-      const param = {
+      if (app.globalData.classify.indexOf("FF") != -1) {
+      var balancepay = {
         orderNo: orderNo,
-        sessionKey: sessionKey
+        sessionKey: sessionKey,
+        deviceId: app.globalData.deviceId
+      }
+      }else{
+        var balancepay = {
+          orderNo: orderNo,
+          sessionKey: sessionKey
+        }
       }
       //余额支付
-      http('qsq/service/external/pay/balancePay', param, 1).then(res => {
+      http('qsq/service/external/pay/balancePay', balancepay, 1).then(res => {
         const { id } = res
         if (id) {
           app.globalData.goodsList = []
